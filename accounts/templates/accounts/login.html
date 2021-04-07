@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Login</h1>
+  <form action="{% url 'accounts:login' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <a href="">※ 비밀번호가 기억이 안나시나요?</a>
+    <div>
+      <button class="btn btn-dark">로그인</button>
+      <button class="btn btn-primary" type="button">회원가입</button>
+    </div>
+  </form>
+{% endblock content %}
