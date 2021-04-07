@@ -30,5 +30,5 @@ class Comment(models.Model):
     )
 
 class Photo(models.Model):
-    image = models.ImageField(upload_to='Photo/%Y%m%d')
+    image = models.ImageField(upload_to='Photo/%Y%m%d', blank=True, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
