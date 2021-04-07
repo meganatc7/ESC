@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div>
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      <button class="btn btn-dark">완료</button>
+    </form>
+  </div>
+{% endblock content %}
