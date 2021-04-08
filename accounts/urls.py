@@ -9,4 +9,6 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     # 로그아웃
     path('logout/', views.logout, name='logout'),
+    # 정보수정
+    path('update/', views.update, name='update'),
 ]

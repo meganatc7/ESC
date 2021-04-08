@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -63,14 +63,14 @@ class CustomUserCreationForm(UserCreationForm):
         )
     )
 
-    # image = forms.CharField(
-    #     label = '프로필',
-    #     widget = forms.FileField(
-    #         attrs={
-    #             'class': 'form-control',
-    #         }
-    #     )
-    # )
+    image = forms.CharField(
+        label = '프로필',
+        widget = forms.FileInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
 
     introduction = forms.CharField(
         label = '자기소개',
@@ -109,3 +109,49 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
     class Meta(AuthenticationForm):
         fields = '__all__'
+
+class CustomUserChangeForm(UserChangeForm):
+    
+    email = forms.CharField(
+        label = '이메일',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '이메일을 입력하세요',
+            }
+        )
+    )
+
+    address = forms.CharField(
+        label = '주소',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    nickname = forms.CharField(
+        label = '닉네임',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'style': 'width: 200px;',
+            }
+        )
+    )
+
+    introduction = forms.CharField(
+        label = '자기소개',
+        widget = forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'maxlength': 300,
+            }
+        )
+    )
+
+    class Meta(UserChangeForm):
+        model = get_user_model()
+        fields = ('email', 'address', 'nickname', 'introduction',)
