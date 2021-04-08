@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>INDEX</h1>
-  <hr>
-  <a href="{% url 'articles:create' %}">게시글 작성</a>
-{% endblock content %}
+  {% comment %} 메인 화면 - 로그인 전 {% endcomment %}   
+  <div>
+    {% if request.user.is_authenticated %}
+      <h1>날씨 화면입니다.</h1>
+      <a href="{% url 'articles:create' %}">글작성</a>
+    {% else %}
+      <h1>Everyday Ssafy Community</h1>
+      <br>
+      <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
+      <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+    {% endif %}
+  </div>  
+  <br>
+  {% comment %} 게시창 - 게시글 {% endcomment %}
+  {% for article in articles %}
+    <div class="card mb-3">
+      <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ article.title }}</h5>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+{% endblock %}

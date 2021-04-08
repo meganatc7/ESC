@@ -41,7 +41,15 @@ class PhotoForm(forms.ModelForm):
 PhotoFormSet = forms.inlineformset_factory(Article, Photo, form=PhotoForm, extra=5)
 
 class CommentForm(forms.ModelForm):
-
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해주세요',
+                'rows': 3,
+                'cols': 150,
+            }
+        )
+    )
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('content',)

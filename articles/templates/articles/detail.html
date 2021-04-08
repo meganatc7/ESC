@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <p>{{ article.category }}</p>
+  <h3>{{ article.title }}</h3>
+  <p>{{ article.user }}<br>
+    작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
+  <hr>
+
+  {% comment %} 이미지 {% endcomment %}
+  {% for photo in photos %}
+    <div class="d-flex justify-content-center">
+      <img src="{{ photo.image.url }}" alt="{{ photo.image }}">
+    </div>    
+    <br>
+  {% endfor %}
+
+  {% comment %} 내용 {% endcomment %}
+  <div class="my-5">
+    <h5>{{ article.content }}</h5>
+  </div>
+  <br><br><br>
+
+  {% comment %} 댓글 작성 {% endcomment %}
+  <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
+  <hr>
+  <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="d-flex justify-content-center">
+      {{ comment_form.content }}
+    </div>
+    <br>
+    <div class="d-flex justify-content-end mx-4">
+      <button type="submit" class="btn btn-primary">작성 완료</button>
+    </div>
+  </form>
+  <br>
+
+  {% comment %} 댓글 표시 {% endcomment %}
+  {% for comment in comments %}
+    <div class="position-relative">
+      {% comment %} 댓글 글쓴이 정보 {% endcomment %}
+      <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+          <img src="#" alt="...">
+        </div>
+        <div class="flex-grow-1 ms-3">
+          <p>{{ comment.user }}<br>
+          작성일 : {{ comment.created_at|date:"Y.m.d" }}</p>
+        </div>
+      </div>
+      {% comment %} 삭제 / 수정 버튼 {% endcomment %}
+      <div class="position-absolute top-50 end-0 translate-middle-y">
+        <a class="mx-1" href="#" style="text-decoration: none; color: black;">삭제</a>
+        <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
+      </div>
+    </div>
+
+    {% comment %} 댓글내용 {% endcomment %}
+    <div>
+      {{ comment.content }}
+    </div>
+    <hr>
+    <br>
+  {% endfor %}
+{% endblock %}
