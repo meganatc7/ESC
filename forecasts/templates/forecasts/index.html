@@ -3,5 +3,17 @@
 {% block content %}
 
   <h1>날씨 상세 페이지</h1>
-
+  <p>현재 기온: {{ T1H }}</p>
+  <p>
+    현재 강수 형태: 
+    {% if PTY == '0' %}
+      비가 오지 않습니다.
+    {% elif PTY == '1' %}
+      비가 옵니다. <span class="fw-bold">우산</span>을 챙기세요!
+    {% elif PTY == '3' %}
+      눈이 옵니다... ㅜ
+    {% else %}
+      비 또는 눈이 약하게 떨어지고 있습니다.
+    {% endif %}
+  </p>
 {% endblock  %}
