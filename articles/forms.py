@@ -23,16 +23,22 @@ class ArticleForm(forms.ModelForm):
             }
         )
     )
-    image = forms.ImageField(
-        label='이미지',
-    )
 
     class Meta:
-        model = Photo
-        fields = ('image',)
         model = Article
-        fields = ('title', 'content',)        
+        fields = ('category', 'title', 'content',)
 
+
+class PhotoForm(forms.ModelForm):
+    image = forms.ImageField(
+        label='이미지',
+        required=False,
+    )
+    class Meta:
+        model = Photo
+        fields = ('image',)        
+# 이미지 폼을 갖고와 엮어서 폼셋으로 만들기
+PhotoFormSet = forms.inlineformset_factory(Article, Photo, form=PhotoForm, extra=5)
 
 class CommentForm(forms.ModelForm):
 
