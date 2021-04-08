@@ -9,6 +9,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': '아이디를 입력하세요',
+                'autofocus': 'True',
             }
         )
     )
@@ -62,9 +63,9 @@ class CustomUserCreationForm(UserCreationForm):
         )
     )
 
-    # image = forms.ImageField(
+    # image = forms.CharField(
     #     label = '프로필',
-    #     widget = forms.ImageField(
+    #     widget = forms.FileField(
     #         attrs={
     #             'class': 'form-control',
     #         }
@@ -93,6 +94,7 @@ class CustomAuthenticationForm(AuthenticationForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': '아이디를 입력해주세요',
+                'autofocus': 'True',
             }
         )
     )
