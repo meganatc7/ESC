@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_http_methods, require_POST
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @require_http_methods(['GET','POST'])
@@ -70,3 +72,10 @@ def update(request):
         'form': form,
     }
     return render(request, 'accounts/update.html', context)
+
+
+@login_required
+def delete(request):
+    request.user.delete()
+    update_session_auth_hash(request, request.user)
+    return redirect('articles:index')

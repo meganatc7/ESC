@@ -8,7 +8,10 @@
       {% csrf_token %}
       <button>로그아웃</button>
     </form>
-    <a href="">회원탈퇴</a>
+    <form action="{% url 'accounts:delete' %}" method="POST">
+      {% csrf_token %}
+      <button>회원탈퇴</button>
+    </form>
     <a href="{% url 'accounts:update' %}">정보수정</a>
   {% endif %}
 </div>
