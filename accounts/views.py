@@ -59,10 +59,13 @@ def logout(request):
 def update(request):
     # POST 요청인 경우
     if request.method == 'POST':
-        pass
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:index')
     # GET 요청인 경우
     else:
-        form = CustomUserChangeForm()
+        form = CustomUserChangeForm(instance=request.user)
     context = {
         'form': form,
     }
