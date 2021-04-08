@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -53,3 +53,17 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('articles:index')
+
+
+@require_http_methods(['GET','POST'])
+def update(request):
+    # POST 요청인 경우
+    if request.method == 'POST':
+        pass
+    # GET 요청인 경우
+    else:
+        form = CustomUserChangeForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/update.html', context)

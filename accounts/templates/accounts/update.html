@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for field in form %}
+    {{ field.label_tag }}
+    {{ field }}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endblock content %}

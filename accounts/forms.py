@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -63,14 +63,14 @@ class CustomUserCreationForm(UserCreationForm):
         )
     )
 
-    # image = forms.CharField(
-    #     label = '프로필',
-    #     widget = forms.FileField(
-    #         attrs={
-    #             'class': 'form-control',
-    #         }
-    #     )
-    # )
+    image = forms.CharField(
+        label = '프로필',
+        widget = forms.FileInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
 
     introduction = forms.CharField(
         label = '자기소개',
@@ -109,3 +109,9 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
     class Meta(AuthenticationForm):
         fields = '__all__'
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta(UserChangeForm):
+        model = get_user_model()
+        fields = ('username', 'address', 'nickname', 'image', 'introduction',)
