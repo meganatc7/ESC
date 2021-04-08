@@ -4,7 +4,10 @@
     <a href="{% url 'accounts:signup' %}">회원가입</a>
     <a href="{% url 'accounts:login' %}">로그인</a>
   {% else %}
-    <a href="">로그아웃</a>
+    <form action="{% url 'accounts:logout' %}" method="POST">
+      {% csrf_token %}
+      <button>로그아웃</button>
+    </form>
     <a href="">회원탈퇴</a>
   {% endif %}
 </div>
