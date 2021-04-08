@@ -11,4 +11,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     # 정보수정
     path('update/', views.update, name='update'),
+    # 삭제
+    path('delete/', views.delete, name='delete'),
 ]
