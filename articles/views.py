@@ -53,6 +53,22 @@ def detail(request, article_pk):
     return render(request, 'articles/detail.html', context)
 
 
+def update(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.method == 'POST':
+        article_form = ArticleForm(request.POST, instance=article)
+        if article_form.is_valid():
+                article_form.save()
+                return redirect('articles:detail', article.pk)
+    else:
+        article_form = ArticleForm(instance=article)
+    context = {
+        'article_form': article_form,
+        'article': article,
+    }
+    return render(request, 'articles/update.html', context)
+
+
 # 댓글 작성
 def comment_create(request, article_pk):
     if request.user.is_authenticated:
