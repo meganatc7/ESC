@@ -3,8 +3,15 @@
 {% block content %}
   <p>{{ article.category }}</p>
   <h3>{{ article.title }}</h3>
-  <p>{{ article.user }}<br>
-    작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
+  <div class="d-flex align-items-center">
+    <div class="flex-shrink-0">
+      <img src="#" alt="...">
+    </div>
+    <div class="flex-grow-1 ms-3">
+      <p>{{ article.user }}<br>
+      작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
+    </div>
+  </div> 
   <hr>
 
   {% comment %} 이미지 {% endcomment %}
@@ -63,4 +70,5 @@
     <hr>
     <br>
   {% endfor %}
+  
 {% endblock %}
