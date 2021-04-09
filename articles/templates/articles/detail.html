@@ -26,7 +26,14 @@
   <div class="my-5">
     <h5>{{ article.content }}</h5>
   </div>
-  <br><br><br>
+  {% if request.user == article.user %}
+    <div class="d-flex justify-content-end mx-4">
+    <a class="btn btn-success mx-1" href="{% url 'articles:update' article.pk %}" role="button">수정</a>
+    <a class="btn btn-secondary mx-1" href="#" role="button">삭제</a>
+  </div>
+  {% endif %}
+
+  <br><br>
 
   {% comment %} 댓글 작성 {% endcomment %}
   <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
