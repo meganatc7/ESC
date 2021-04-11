@@ -64,8 +64,11 @@
         </div>
       </div>
       {% comment %} 삭제 / 수정 버튼 {% endcomment %}
-      <div class="position-absolute top-50 end-0 translate-middle-y">
-        <a class="mx-1" href="#" style="text-decoration: none; color: black;">삭제</a>
+      <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
+        <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
+        </form>
         <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
       </div>
     </div>
