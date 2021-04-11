@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  {% load static %}
+  <div class="d-flex justify-content-center">
+    <img src="{% static 'img/esc.png' %}" alt="">
+  </div>
   <div>
-    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'accounts:signup' %}" method="POST" id="signup-form" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
         <div>
-          {{ field.label_tag }}
+          <div class="my-1"><strong>{{ field.label_tag }}</strong></div>
           {{ field }}
+          {% if field == form.address %}
+            <input class="btn btn-dark my-2" type="button" onclick="DaumPostcode()" value="주소 검색"></input>
+          {% endif %}
+          {% if field == form.image %}
+            <div id="image-box"></div>
+          {% endif %}
         </div>
         {% if field.errors %}
           {% for error in field.errors %}
@@ -15,7 +25,8 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
-      <button class="btn btn-dark">완료</button>
+      <button class="btn btn-dark mt-2" id="confirm-btn">완료</button>
     </form>
   </div>
+  <script src="{% static 'js/address.js' %}"></script>
 {% endblock content %}

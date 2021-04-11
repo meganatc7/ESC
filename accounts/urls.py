@@ -13,4 +13,6 @@ urlpatterns = [
     path('update/', views.update, name='update'),
     # 삭제
     path('delete/', views.delete, name='delete'),
+    # 이메일 인증
+    path('<str:email>/signin/', views.signin, name='signin'),
 ]
