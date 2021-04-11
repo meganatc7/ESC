@@ -9,4 +9,6 @@ urlpatterns = [
     path('<int:article_pk>/update/', views.update, name='update'),
     # 댓글 작성
     path('<int:article_pk>/comment', views.comment_create, name='comment_create'),
+    # 게시글 좋아요
+    path('<int:article_pk>/like/', views.like, name='like'),
 ]
