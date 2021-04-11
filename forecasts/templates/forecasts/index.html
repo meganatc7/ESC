@@ -2,6 +2,23 @@
 
 {% block content %}
 
-  <h1>날씨 상세 페이지</h1>
-
+  <h1 class="my-5 text-center">날씨 상세 페이지</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <p>시간: {{ c_TIME }}</p>
+        <p>기온: {{ c_T1H }}</p>
+        <p>형태: {{ c_PTY }}</p>
+      </div>
+      
+      {% for data in processed_pred_data %}
+        <div class="col-2">
+          <p>시간: {{ data.time }}</p>
+          <p>기온: {{ data.temp }}</p>
+          <p>하늘 상태: {{ data.sky }}</p>
+          <p>강수 형태: {{ data.pty }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock  %}
