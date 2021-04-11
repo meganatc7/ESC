@@ -5,7 +5,7 @@
   <h3>{{ article.title }}</h3>
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
-      <img src="#" alt="...">
+      <img src="{{ article.user.image.url }}" alt="...">
     </div>
     <div class="flex-grow-1 ms-3">
       <p>{{ article.user }}<br>
@@ -17,7 +17,7 @@
   {% comment %} 이미지 {% endcomment %}
   {% for photo in photos %}
     <div class="d-flex justify-content-center">
-      <img src="{{ photo.image.url }}" alt="{{ photo.image }}">
+      <img src="{{ photo.image.url }}" width="90%" alt="{{ photo.image }}">
     </div>    
     <br>
   {% endfor %}
@@ -27,9 +27,34 @@
     <h5>{{ article.content }}</h5>
   </div>
   {% if request.user == article.user %}
+    <hr>
     <div class="d-flex justify-content-end mx-4">
     <a class="btn btn-success mx-1" href="{% url 'articles:update' article.pk %}" role="button">수정</a>
-    <a class="btn btn-secondary mx-1" href="#" role="button">삭제</a>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      삭제
+    </button>
+
+    {% comment %} 모달 {% endcomment %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <h5 class="fw-bold">정말 삭제하시겠습니까?</h5>
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'articles:delete' article.pk %}" mehtod="POST">
+              {% csrf_token %}
+              <button class="btn btn-primary">Yes</button>
+            </form>            
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   {% endif %}
 
