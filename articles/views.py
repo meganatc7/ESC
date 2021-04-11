@@ -95,6 +95,16 @@ def comment_create(request, article_pk):
         return render(request, 'articles/detail.html', context)
     return redirect('accounts:login')
 
+
+# 댓글 삭제
+def comment_delete(request, article_pk, comment_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.user == article.user:
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+        return redirect('articles:detail', article.pk)
+
+      
 # 게시글 좋아요
 def like(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
