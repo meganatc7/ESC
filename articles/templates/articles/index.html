@@ -1,5 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>INDEX</h1>
-{% endblock content %}
+  {% comment %} 메인 화면 {% endcomment %}   
+  <div>
+    {% if request.user.is_authenticated %}
+      <h1>날씨 화면입니다.</h1>
+      <a href="{% url 'articles:create' %}">글작성</a>
+    {% else %}
+      <h1>Everyday Ssafy Community</h1>
+      <br>
+      <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
+      <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+    {% endif %}
+  </div>  
+  <br>
+
+  {% comment %} 게시창 - 게시글 {% endcomment %}
+  <div class="d-flex justify-content-end">
+    <a class="mx-2" href="" style="color: gray;"><i class="fas fa-align-justify"></i></a>
+    <a class="mx-2" href="" style="color: gray;"><i class="fas fa-th-large"></i></a>
+  </div>
+  <hr><br>
+
+  {% comment %} 텍스트 게시글 {% endcomment %}
+  {% for article in articles %}
+    <div class="card mb-3">
+      <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ article.title }}</h5>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+  
+  {% comment %} 이미지 게시글 {% endcomment %}
+  {% for article in articles %}
+    <div class="container">
+      <div class="row">
+        {% for photo in article.photo_set.all %}
+          <div class="col-4">
+            <a href="{% url 'articles:detail' article.pk %}">
+              <img src="{{ photo.image.url }}" class="img-thumbnail" alt="">
+            </a>
+          </div>
+        {% endfor %}
+      </div>      
+    </div>
+  {% endfor %}
+
+{% endblock %}
