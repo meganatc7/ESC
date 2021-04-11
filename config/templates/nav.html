@@ -1,5 +1,8 @@
+{% load static %}
 <div class="sticky-top">
-  <h1>NAV</h1>
+  <a href="{% url "articles:index" %}">
+    <img src="{% static 'img/로고.png' %}" alt="" width=80px>
+  </a>
   {% if not request.user.is_authenticated %}
     <a href="{% url 'accounts:signup' %}">회원가입</a>
     <a href="{% url 'accounts:login' %}">로그인</a>

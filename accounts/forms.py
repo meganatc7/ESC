@@ -49,6 +49,9 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.TextInput(
             attrs={
                 'class': 'form-control',
+                'id': 'address',
+                'placeholder': '주소',
+                'readonly': True,
             }
         )
     )
@@ -63,11 +66,14 @@ class CustomUserCreationForm(UserCreationForm):
         )
     )
 
-    image = forms.CharField(
+    image = forms.ImageField(
         label = '프로필',
+        required = False,
         widget = forms.FileInput(
             attrs={
                 'class': 'form-control',
+                'name': 'image',
+                'accept': 'image/*',
             }
         )
     )
@@ -79,6 +85,7 @@ class CustomUserCreationForm(UserCreationForm):
                 'class': 'form-control',
                 'rows': 3,
                 'maxlength': 300,
+                'placeholder': '나에 대해 작성해주세요. (300자 이내)'
             }
         )
     )
