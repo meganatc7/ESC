@@ -69,6 +69,14 @@ def update(request, article_pk):
     return render(request, 'articles/update.html', context)
 
 
+def delete(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    photos = Photo.objects.filter(article_id=article_pk).all()
+    photos.delete()
+    article.delete()
+    return redirect('articles:index')
+
+    
 # 댓글 작성
 def comment_create(request, article_pk):
     if request.user.is_authenticated:
@@ -95,3 +103,14 @@ def comment_delete(request, article_pk, comment_pk):
         comment = get_object_or_404(Comment, pk=comment_pk)
         comment.delete()
         return redirect('articles:detail', article.pk)
+
+      
+# 게시글 좋아요
+def like(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.user.is_authenticated:
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user)
+        else:
+            article.like_users.add(request.user)
+    return redirect('articles:detail', article.pk)
