@@ -5,10 +5,10 @@
   <h3>{{ article.title }}</h3>
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
-      <img src="{{ article.user.image.url }}" alt="...">
+      <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
     </div>
     <div class="flex-grow-1 ms-3">
-      <p>{{ article.user }}<br>
+      <p class="my-0">{{ article.user }}<br>
       작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
     </div>
   </div> 
