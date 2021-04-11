@@ -86,3 +86,13 @@ def comment_create(request, article_pk):
         }
         return render(request, 'articles/detail.html', context)
     return redirect('accounts:login')
+
+# 게시글 좋아요
+def like(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.user.is_authenticated:
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user)
+        else:
+            article.like_users.add(request.user)
+    return redirect('articles:detail', article.pk)
