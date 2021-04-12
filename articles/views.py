@@ -58,8 +58,8 @@ def update(request, article_pk):
     if request.method == 'POST':
         article_form = ArticleForm(request.POST, instance=article)
         if article_form.is_valid():
-                article_form.save()
-                return redirect('articles:detail', article.pk)
+            article_form.save()
+            return redirect('articles:detail', article.pk)
     else:
         article_form = ArticleForm(instance=article)
     context = {

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container" style="width: 50rem;">
-  <h2 class="text-center">{{ article.category }} 수정하기</h2>
+  <h2 class="text-center">게시글 수정하기 ✒</h2>
   <hr>
 
   {% comment %} 폼 부분 {% endcomment %}
@@ -15,9 +15,7 @@
       </div>    
       <br>
     {% endfor %}
-    {% for form in photo_formset %}
-      <p>{{ form.image }}</p>
-    {% endfor %}
+    {{ photo_formset.as_p }}
     <br>
 
     {% comment %} 버튼 부분 {% endcomment %}
