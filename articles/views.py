@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_safe, require_http_methods, require_POST
 from .forms import ArticleForm, PhotoFormSet, CommentForm
 from .models import Article, Photo, Comment
 
 # Create your views here.
+@require_safe
 def index(request):
     articles = Article.objects.order_by('-pk')
     context = {
@@ -13,6 +15,8 @@ def index(request):
     return render(request, 'articles/index.html', context)
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def create(request):
     if request.method == 'POST':
         article_form = ArticleForm(request.POST)
@@ -37,6 +41,7 @@ def create(request):
     return render(request, 'articles/create.html', context)
 
 
+@require_safe
 def detail(request, article_pk):
     # 게시물, 사진
     article = get_object_or_404(Article, pk=article_pk)
@@ -53,13 +58,15 @@ def detail(request, article_pk):
     return render(request, 'articles/detail.html', context)
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if request.method == 'POST':
         article_form = ArticleForm(request.POST, instance=article)
         if article_form.is_valid():
-                article_form.save()
-                return redirect('articles:detail', article.pk)
+            article_form.save()
+            return redirect('articles:detail', article.pk)
     else:
         article_form = ArticleForm(instance=article)
     context = {
@@ -69,15 +76,20 @@ def update(request, article_pk):
     return render(request, 'articles/update.html', context)
 
 
+@require_POST
 def delete(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     photos = Photo.objects.filter(article_id=article_pk).all()
-    photos.delete()
-    article.delete()
-    return redirect('articles:index')
+    if request.user.is_authenticated:
+        if request.user == article.user:
+            photos.delete()
+            article.delete()
+            return redirect('articles:index')
+    return redirect('articles:detail', article.pk)
 
     
 # 댓글 작성
+@require_POST
 def comment_create(request, article_pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
@@ -97,20 +109,37 @@ def comment_create(request, article_pk):
 
 
 # 댓글 삭제
+@require_POST
 def comment_delete(request, article_pk, comment_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    if request.user == article.user:
+    if request.user.is_authenticated:
         comment = get_object_or_404(Comment, pk=comment_pk)
-        comment.delete()
-        return redirect('articles:detail', article.pk)
+        if request.user == article.user:
+            comment.delete()
+    return redirect('articles:detail', article.pk)
 
       
 # 게시글 좋아요
+@require_POST
 def like(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
     if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=article_pk)
         if article.like_users.filter(pk=request.user.pk).exists():
             article.like_users.remove(request.user)
         else:
             article.like_users.add(request.user)
-    return redirect('articles:detail', article.pk)
+        return redirect('articles:detail', article.pk)
+    return redirect('accounts:login')
+
+
+@require_safe
+def board(request, category):
+    articles = Article.objects.order_by('-pk')
+    category = category
+    likes = Article.objects.order_by('-like_users')[:3]
+    context = {
+        'articles': articles,
+        'category': category,
+        'likes': likes,
+    }
+    return render(request, 'articles/board.html', context)

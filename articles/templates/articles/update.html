@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container" style="width: 50rem;">
-  <h2 class="text-center">{{ article.category }} 수정하기</h2>
+  <h2 class="text-center">게시글 수정하기 ✒</h2>
   <hr>
 
   {% comment %} 폼 부분 {% endcomment %}
@@ -15,8 +15,21 @@
       </div>    
       <br>
     {% endfor %}
+    {{ photo_formset.management_form }}
     {% for form in photo_formset %}
-      <p>{{ form.image }}</p>
+      {{ form.id }}
+      <fieldset class="aligned">
+        <div class="form-row">
+          {{ form.image.label_tag }} {{ form.image }}
+        </div>
+        <div class="form-row">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div class="form-row">
+          {{ form.description.label_tag }} {{ form.description }}
+        </div>
+      </fieldset>
+      <br>
     {% endfor %}
     <br>
 
@@ -26,10 +39,7 @@
       <a class="btn btn-danger mx-3" href="{% url 'articles:index' %}" role="button">수정 취소</a>
     </div>
   </form>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 </div>
   
   

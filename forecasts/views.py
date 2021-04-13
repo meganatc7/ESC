@@ -6,6 +6,16 @@ from pprint import pprint
 # 브라우저에서 직접 url로 데이터 받아보기
 # http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey=3urgccFNfwIp7ePyvIBfqtDLrK7Sxy2YZkHZ4lc33Cf%2F242KukfpnMSZ8wPOQCh716qplOd0Pp3AtewChHHfrg%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&base_date=20210408&base_time=2100&nx=58&ny=74
 
+locs2xy = {
+    '광주': [],
+    '서울': [60, 127],
+    '부산': [98, 76],
+    '대구': [89, 90],
+    '인천': [55, 124],
+    '경기': [],
+
+}
+
 
 # time_setting 함수는 현재 시간을 파악하여, 
 # 날씨 데이터 중 가장 최신의 데이터를 받아 올 수 있도록
@@ -83,7 +93,21 @@ def processing_data(data_dict):
 
     return processed_data
 
-
+# 현재 기온과 예측된 기온의 차이를 활용하는 함수
+# def f_temps(c_t, arr):
+#     len_arr = len(arr)
+#     abs_dif = [0] * len_arr
+#     dif = [0] * len_arr
+#     for i in range(len_arr):
+#         dif[i] =  arr[i] - c_t
+#         abs_dif[i] = abs(dif)
+    
+#     max_abs_dif_idx = abs_dif.index(max(abs_dif))
+#     pixels = [0] * len_arr
+#     for i in range(abs)
+#         if i != max_abs_dif_idx:
+            
+#         else:
 
 # Create your views here.
 @login_required
@@ -129,7 +153,7 @@ def index(request):
     srt_fcst_dict = srt_fcst_response.json()  # 딕셔너리 자료형
     
     processed_pred_data = processing_data(srt_fcst_dict)
-
+    print(processed_pred_data)
     context = {
         'c_TIME': now_hour[:2] + ':' + now_hour[2:],
         'c_T1H': c_T1H,
