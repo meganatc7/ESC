@@ -125,6 +125,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'config' / 'static',
+    BASE_DIR / 'forecasts' / 'static',
 ]
 
 MEDIA_URL = '/media/'
