@@ -3,12 +3,15 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserC
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
 from .models import User
 from django.http import JsonResponse
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 
 # Create your views here.
 # 가입 유저에게 이메일 보내는 함수
@@ -46,6 +49,7 @@ def signup(request):
             user = form.save()
             # 유효성 검사 하고 난 뒤 이메일 보내기
             send_email(user.email)
+            print('이메일 발송')
             # return JsonResponse({'messgae': 'works'})
             return redirect('articles:index')
     # GET 요청
@@ -78,6 +82,10 @@ def login(request):
     return render(request, 'accounts/login.html', context)
 
 
+def cropped(request):
+    print('확인',request)
+
+
 @require_POST
 def logout(request):
     auth_logout(request)
@@ -106,3 +114,13 @@ def delete(request):
     request.user.delete()
     update_session_auth_hash(request, request.user)
     return redirect('articles:index')
+
+
+def profile(request, nickname):
+    person = get_object_or_404(get_user_model(), nickname=nickname)
+    form = CustomUserChangeForm()
+    context = {
+        'person': person,
+        'form': form,
+    }
+    return render(request, 'accounts/profile.html', context)

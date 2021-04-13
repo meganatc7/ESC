@@ -67,7 +67,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     image = forms.ImageField(
-        label = '프로필',
+        label = '프로필([마이 프로필]에서 수정이 가능합니다)',
         required = False,
         widget = forms.FileInput(
             attrs={
@@ -148,6 +148,18 @@ class CustomUserChangeForm(UserChangeForm):
         )
     )
 
+    image = forms.ImageField(
+        label = '프로필([마이 프로필]에서 수정이 가능합니다)',
+        required = False,
+        widget = forms.FileInput(
+            attrs={
+                'class': 'form-control',
+                'name': 'image',
+                'accept': 'image/*',
+            }
+        )
+    )
+
     introduction = forms.CharField(
         label = '자기소개',
         widget = forms.Textarea(
@@ -161,4 +173,4 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta(UserChangeForm):
         model = get_user_model()
-        fields = ('email', 'address', 'nickname', 'introduction',)
+        fields = ('email', 'address', 'nickname', 'image', 'introduction',)

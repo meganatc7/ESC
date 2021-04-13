@@ -1,13 +1,13 @@
 // 필요한 각각의 태그들을 변수화
 const imageBox = document.querySelector('#image-box')
-
 const input = document.querySelector('#id_image')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 const confirmBtn = document.querySelector('#confirm-btn')
 
 // input변수에 이벤트
 input.addEventListener('change', ()=>{
-  console.log('changed')
+
+  confirmBtn.classList.remove('not-visible')
 
   //file 정보를 가져와서 img_data 변수에 저장
   const img_data = input.files[0]
@@ -21,44 +21,30 @@ input.addEventListener('change', ()=>{
 
   // 이미지 크롭 기능
   $image.cropper({
-    aspectRatio: 8 / 8,
+    aspectRatio: 9 / 9,
     crop: function(event) {
-      // console.log(event.detail.x);
-      // console.log(event.detail.y);
-      // console.log(event.detail.width);
-      // console.log(event.detail.height);
-      // console.log(event.detail.rotate);
-      // console.log(event.detail.scaleX);
-      // console.log(event.detail.scaleY);
+
     }
   });
 
-  //여기서 부터 코드가 잘 이해가 안됩니다.
   var cropper = $image.data('cropper');
 
   confirmBtn.addEventListener('click', (event)=>{
     event.preventDefault()
     cropper.getCroppedCanvas().toBlob((blob)=>{
       console.log(blob)
-      const signupForm = document.querySelector('#signup-form')
-      const fd = new FormData(signupForm)
-      // fd.append('csrfmiddlewaretoken', csrf[0].value)
-      fd.set('image', blob, 'my-image.png')
 
       $.ajax({
         type: 'POST',
-        url: signupForm.action,
+        url: '/accounts/cropped/',
         enctype: 'multipart/form-data',
-        data: fd,
+        data: blob,
         success: function(response){
           console.log(response)
         },
         error: function(error){
           console.log(error)
         },
-        cache: false,
-        contentType: false,
-        processData: false,
       })
     })
   })
