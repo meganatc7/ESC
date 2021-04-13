@@ -17,6 +17,7 @@
           {% endif %}
           {% if field == form.image %}
             <div id="image-box"></div>
+            <button type="button" class="btn btn-dark mt-2 not-visible" id="confirm-btn">확인</button>
           {% endif %}
         </div>
         {% if field.errors %}
@@ -25,8 +26,8 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
+      <button class="btn btn-dark mt-2">회원가입</button>
     </form>
-    <button class="btn btn-dark mt-2" id="confirm-btn">완료</button>
   </div>
   <script src="{% static 'js/address.js' %}"></script>
 {% endblock content %}

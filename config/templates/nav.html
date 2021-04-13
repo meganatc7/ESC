@@ -16,5 +16,6 @@
       <button>회원탈퇴</button>
     </form>
     <a href="{% url 'accounts:update' %}">정보수정</a>
+    <a href="{% url 'accounts:profile' request.user.nickname %}">마이 프로필</a>
   {% endif %}
 </div>

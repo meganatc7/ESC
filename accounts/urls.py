@@ -15,4 +15,8 @@ urlpatterns = [
     path('delete/', views.delete, name='delete'),
     # 이메일 인증
     path('<str:email>/signin/', views.signin, name='signin'),
+    # 프로필 페이지
+    path('<str:nickname>/profile/', views.profile, name='profile'),
+    # crop사진 임시 저장
+    path('cropped/', views.cropped, name='cropped'),
 ]
