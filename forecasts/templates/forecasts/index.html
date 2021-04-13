@@ -1,24 +1,140 @@
 {% extends 'base.html' %}
 
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'forecasts/style.css' %}">
+  <script src="https://kit.fontawesome.com/057b377c97.js" crossorigin="anonymous"></script>
+{% endblock  %}
+
 {% block content %}
 
   <h1 class="my-5 text-center">날씨 상세 페이지</h1>
   <div class="container">
+    {% comment %} 날씨 그림 보여주기 {% endcomment %}
     <div class="row">
+      {% comment %} 현재 {% endcomment %}
+      <div class="col-4 d-flex align-items-center">
+        {% if c_PTY == "비가 오지 않습니다." %}
+          <div class="icon sunny">
+          <div class="sun">
+            <div class="rays"></div>
+          </div>
+        </div>
+        {% elif c_PTY == "비가 옵니다." %}
+          <div class="icon rainy">
+            <div class="cloud"></div>
+            <div class="rain"></div>
+          </div>
+        {% elif c_PTY == "눈이 옵니다...ㅜ" %}
+          <div class="icon flurries">
+            <div class="cloud"></div>
+            <div class="snow">
+              <div class="flake"></div>
+              <div class="flake"></div>
+            </div>
+          </div>
+        {% else %}
+          <div class="icon cloudy">
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+          </div>
+        {% endif %}
+      </div>
+      {% comment %} 예측 (1h, 2h, 3h, 4h) {% endcomment %}
+      {% for data in processed_pred_data %}
+        <div class="col-2 d-flex align-items-center">
+          {% if data.pty == "비가 오지 않습니다." %}
+            {% if data.sky == "말금" %}
+              <div class="icon sunny" style="font-size: 0.5em;">
+                <div class="sun">
+                  <div class="rays"></div>
+                </div>
+              </div>
+            {% elif data.sky == "구름 많음" %}
+              <div class="icon cloudy" style="font-size: 0.5em;">
+                <div class="cloud"></div>
+              </div>
+            {% else %}
+              <div class="icon sun-shower" style="font-size: 0.5em;">
+                <div class="cloud"></div>
+                <div class="sun">
+                  <div class="rays"></div>
+                </div>
+              </div>
+            {% endif %}
+          {% elif data.pty == "비가 옵니다." %}
+            <div class="icon rainy" style="font-size: 0.5em;">
+              <div class="cloud"></div>
+              <div class="rain"></div>
+            </div>
+          {% elif data.pty == "눈이 옵니다...ㅜ" %}
+            <div class="icon flurries" style="font-size: 0.5em;">
+              <div class="cloud"></div>
+              <div class="snow">
+                <div class="flake"></div>
+                <div class="flake"></div>
+              </div>
+            </div>
+          {% else %}
+            <div class="icon cloudy" style="font-size: 0.5em;">
+              <div class="cloud"></div>
+              <div class="cloud"></div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% comment %} 시간 {% endcomment %}
+    <div class="row">
+      {% comment %} 현재 {% endcomment %}
+      <div class="col-4 d-flex align-items-center justify-content-center">
+        <p class="fw-bold fs-5 mt-0">{{ c_TIME }}</p>
+      </div>
+      {% comment %} 예측 (1h, 2h, 3h, 4h) {% endcomment %}
+      {% for data in processed_pred_data %}
+        <div class="col-2 d-flex align-items-center justify-content-center">
+          <p class="fw-bold mt-0">{{ data.time }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    {% comment %} 기온 그래프 {% endcomment %}
+    <div class="row" style="height: 80px;">
+      <div class="col-4 d-flex justify-content-center align-items-center" style="font-size: 0.8em;"><i class="fas fa-dot-circle text-success"></i></div>
+      <div class="col-2 d-flex justify-content-center align-items-center"><i class="fas fa-dot-circle text-dark" style="font-size: 0.6em;"></i></div>
+      <div class="col-2 d-flex justify-content-center align-items-center"><i class="fas fa-dot-circle text-dark" style="font-size: 0.6em;"></i></div>
+      <div class="col-2 d-flex justify-content-center align-items-center"><i class="fas fa-dot-circle text-dark" style="font-size: 0.6em;"></i></div>
+      <div class="col-2 d-flex justify-content-center align-items-center"><i class="fas fa-dot-circle text-dark" style="font-size: 0.6em;"></i></div>
+    </div>
+    {% comment %} 기온 수치 {% endcomment %}
+    <div class="row">
+      <div class="col-4"><p class="fw-bold">{{ c_T1H }} &deg;C</p></div>
+      {% for data in processed_pred_data %}
+        <div class="col-2"><p>{{ data.temp }} &deg;C</p></div>
+      {% endfor %}
+    </div>
+    {% comment %} <div class="row">
       <div class="col-4">
+        <div class="icon sunny">
+          <div class="sun">
+            <div class="rays"></div>
+          </div>
+        </div>
         <p>시간: {{ c_TIME }}</p>
         <p>기온: {{ c_T1H }}</p>
         <p>형태: {{ c_PTY }}</p>
       </div>
-      
       {% for data in processed_pred_data %}
         <div class="col-2">
+          <div class="icon rainy" style="font-size: 0.5em">
+            <div class="cloud"></div>
+            <div class="rain"></div>
+          </div>
           <p>시간: {{ data.time }}</p>
           <p>기온: {{ data.temp }}</p>
           <p>하늘 상태: {{ data.sky }}</p>
           <p>강수 형태: {{ data.pty }}</p>
         </div>
       {% endfor %}
-    </div>
+    </div> {% endcomment %}
   </div>
 {% endblock  %}
