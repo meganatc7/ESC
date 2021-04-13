@@ -1,5 +1,5 @@
 {% load static %}
-<div class="sticky-top">
+{% comment %} <div class="sticky-top">
   <a href="{% url "articles:index" %}">
     <img src="{% static 'img/로고.png' %}" alt="" width=80px>
   </a>
@@ -18,7 +18,7 @@
     <a href="{% url 'accounts:update' %}">정보수정</a>
     <a href="{% url 'accounts:profile' request.user.nickname %}">마이 프로필</a>
   {% endif %}
-</div>
+</div> {% endcomment %}
 <nav class="navbar navbar-expand-lg sticky-top bg-white">
   <div class="container-fluid">
     <div>
@@ -53,7 +53,9 @@
           {% csrf_token %}
           <button>회원탈퇴</button>
         </form>
-        <a href="{% url 'accounts:update' %}">정보수정</a>
+        <a href="{% url 'accounts:update' %}">[정보수정]</a>
+        <a href="{% url 'accounts:profile' request.user.nickname %}">[마이 프로필]</a>
+        <a href="{% url 'accounts:update' %}">[정보수정]</a>
       {% endif %}
     </div> 
   </div>
