@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% comment %} 인기글 {% endcomment %}   
+  <div>
+    <h3 class="text-center fw-bold">🔥 HOT 게시글 🔥</h3>
+    <hr>
+    {% for like in likes %}
+      <div class="card mb-3">
+        <a href="{% url "articles:detail" like.pk %}" style="text-decoration: none; color: black;">
+          <div class="card-body d-flex justify-content-between">
+            <div>
+              <h5 class="card-title fw-bold">
+                {% if like.category == 1 %}
+                  [자유게시판]
+                {% elif like.category == 2 %}
+                  [질문게시판]
+                {% elif like.category == 3 %}
+                  [중고거래]
+                {% endif %}
+                {{ like.title }}
+              </h5>
+              <p class="my-0">{{ like.user }} ✍</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <p class="my-0">
+                ❤ {{ like.like_users.all|length }}&nbsp
+                🕔 {{ like.updated_at|date:"Y.m.d" }}
+              </p>
+          </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <br><br>
+
+  {% comment %} 게시글 {% endcomment %}
+  <h4 class="text-center fw-bold">
+    {% if category == 1 %}
+      자유게시판
+    {% elif  category == 2 %}
+      질문게시판
+    {% elif  category == 3 %}
+      중고거래
+    {% endif %}
+  </h4>
+  <hr>
+  {% for article in articles %}
+    {% if article.category == category %}
+      <div class="card mb-3">
+        <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
+          <div class="card-body d-flex justify-content-between">
+            <div>
+              <h5 class="card-title fw-bold">{{ article.title }}</h5>
+              <p class="my-0">{{ article.user }}</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <p class="my-0">
+                ❤ {{ article.like_users.all|length }}&nbsp
+                🕔 {{ article.updated_at|date:"Y.m.d" }}
+              </p>
+          </div>
+          </div>
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+  <br><br><br><br>
+
+{% endblock %}

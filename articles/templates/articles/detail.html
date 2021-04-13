@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <p>{{ article.category }}</p>
+  <p>
+    {% if article.category == 1 %}
+      자유게시판
+    {% elif article.category == 2 %}
+      질문게시판
+    {% elif article.category == 3 %}
+      중고거래
+    {% endif %}
+  </p>
   <h3>{{ article.title }}</h3><br>
   {% comment %} 작성자, 작성시간 정보 {% endcomment %}
   <div class="d-flex align-items-center">

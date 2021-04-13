@@ -8,7 +8,7 @@ class ArticleForm(forms.ModelForm):
     CATEGORY_CHOICES = [
         (CATEGORY_A, '자유 게시판'),
         (CATEGORY_B, '질문 게시판'),
-        (CATEGORY_C, '장터 게시판'),
+        (CATEGORY_C, '중고거래'),
     ]
     category = forms.ChoiceField(
         label='',

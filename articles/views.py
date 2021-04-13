@@ -130,3 +130,16 @@ def like(request, article_pk):
             article.like_users.add(request.user)
         return redirect('articles:detail', article.pk)
     return redirect('accounts:login')
+
+
+@require_safe
+def board(request, category):
+    articles = Article.objects.order_by('-pk')
+    category = category
+    likes = Article.objects.order_by('-like_users')[:3]
+    context = {
+        'articles': articles,
+        'category': category,
+        'likes': likes,
+    }
+    return render(request, 'articles/board.html', context)
