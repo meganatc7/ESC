@@ -15,7 +15,22 @@
       </div>    
       <br>
     {% endfor %}
-    {{ photo_formset.as_p }}
+    {{ photo_formset.management_form }}
+    {% for form in photo_formset %}
+      {{ form.id }}
+      <fieldset class="aligned">
+        <div class="form-row">
+          {{ form.image.label_tag }} {{ form.image }}
+        </div>
+        <div class="form-row">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div class="form-row">
+          {{ form.description.label_tag }} {{ form.description }}
+        </div>
+      </fieldset>
+      <br>
+    {% endfor %}
     <br>
 
     {% comment %} 버튼 부분 {% endcomment %}
@@ -24,10 +39,7 @@
       <a class="btn btn-danger mx-3" href="{% url 'articles:index' %}" role="button">수정 취소</a>
     </div>
   </form>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 </div>
   
   
