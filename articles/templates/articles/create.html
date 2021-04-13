@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="width: 50rem;">
+  <h2 class="text-center">게시글 작성하기 📄</h2>
+  <hr>
+
+  {% comment %} 폼 부분 {% endcomment %}
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in article_form %}
+      <div>
+          {{ field.label_tag }}
+          {{ field }}              
+      </div>    
+      <br>
+    {% endfor %}
+    <!-- 폼셋에 들어있는 각 폼을 다루는 경우, {{ photo_formset.management_form }} 반드시 추가!! -->
+    {{ photo_formset.management_form }}
+    {% for form in photo_formset %}
+      {{ form.id }}
+      <fieldset class="aligned">
+        <div class="form-row">
+          {{ form.image.label_tag }} {{ form.image }}
+        </div>
+        <div class="form-row">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div class="form-row">
+          {{ form.description.label_tag }} {{ form.description }}
+        </div>
+      </fieldset>
+      <br>
+    {% endfor %}
+    <br>
+
+    {% comment %} 버튼 부분 {% endcomment %}
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary mx-3" type="submit" >작성 완료</button>
+      <a class="btn btn-danger mx-3" href="{% url 'articles:index' %}" role="button">작성 취소</a>
+    </div>
+  </form>
+    <br><br><br>
+</div>    
+{% endblock %}

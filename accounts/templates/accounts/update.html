@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div>
+    <form action="{% url 'accounts:update' %}" method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+        {% if field != form.password %}
+          <div>
+            <div class="my-1"><strong>{{ field.label_tag }}</strong></div>
+            {{ field }}
+            {% if field == form.address %}
+              <input class="btn btn-dark my-2" type="button" onclick="DaumPostcode()" value="주소 검색"></input>
+            {% endif %}
+          {% endif %}
+        </div>
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      <button class="btn btn-primary mt-3">완료</button>
+    </form>
+  </div>
+  <script>
+    function DaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.address; // 최종 주소 변수
+
+            //주소 정보를 해당 인풋 필드에 받아옴
+            document.getElementById("address").value = addr;
+        }
+    }).open();
+  }  
+  </script>
+{% endblock content %}

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <p>
+    {% if article.category == 1 %}
+      자유게시판
+    {% elif article.category == 2 %}
+      질문게시판
+    {% elif article.category == 3 %}
+      중고거래
+    {% endif %}
+  </p>
+  <h3>{{ article.title }}</h3><br>
+  {% comment %} 작성자, 작성시간 정보 {% endcomment %}
+  <div class="d-flex align-items-center">
+    <div class="flex-shrink-0">
+      <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+    </div>
+    <div class="flex-grow-1 ms-3">
+      <p class="my-0">{{ article.user }}<br>
+      작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
+    </div>
+  </div> 
+  <hr>
+
+  {% comment %} 이미지 {% endcomment %}
+  {% for photo in photos %}
+    <div class="d-flex justify-content-center">
+      <img src="{{ photo.image.url }}" width="90%" alt="{{ photo.image }}">
+    </div>    
+    <br>
+  {% endfor %}
+
+  {% comment %} 내용 {% endcomment %}
+  <div class="my-5">
+    <h5>{{ article.content }}</h5>
+  </div>
+  {% if request.user == article.user %}
+    <hr>
+    <div class="d-flex justify-content-end mx-4">
+    <a class="btn btn-success mx-1" href="{% url 'articles:update' article.pk %}" role="button">수정</a>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      삭제
+    </button>
+
+    {% comment %} 모달 {% endcomment %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <h5 class="fw-bold">정말 삭제하시겠습니까?</h5>
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'articles:delete' article.pk %}" mehtod="POST">
+              {% csrf_token %}
+              <button class="btn btn-primary">Yes</button>
+            </form>            
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% comment %} 좋아요 {% endcomment %}
+  <div class="d-flex align-items-center">
+    <form action="{% url 'articles:like' article.pk %}" method="POST">
+      {% csrf_token %}
+      {% if request.user not in article.like_users.all %}
+        <button class="btn btn-white"><i class="far fa-heart"></i></button>
+      {% else %}
+        <button class="btn btn-white"><i class="fas fa-heart" style="color: tomato;"></i></button>
+      {% endif %}
+    </form>
+    <p class="fw-bold"><br>{{ article.like_users.all|length }}명이 이 게시물을 좋아합니다.</p>
+  </div>
+  <br><br>
+
+  {% comment %} 댓글 작성 {% endcomment %}
+  <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
+  <hr>
+  <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="d-flex justify-content-center">
+      {{ comment_form.content }}
+    </div>
+    <br>
+    <div class="d-flex justify-content-end mx-4">
+      <button type="submit" class="btn btn-primary">작성 완료</button>
+    </div>
+  </form>
+  <br>
+
+  {% comment %} 댓글 표시 {% endcomment %}
+  {% for comment in comments %}
+    <div class="position-relative">
+      {% comment %} 댓글 글쓴이 정보 {% endcomment %}
+      <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+          <img src="{{ article.user.image.url }}" alt="..." width="30px" class="rounded-circle">
+        </div>
+        <div class="flex-grow-1 ms-3">
+          <p class="my-0">{{ comment.user }}<br>
+          작성일 : {{ comment.created_at|date:"Y.m.d" }}</p>
+        </div>
+      </div>
+      {% comment %} 삭제 / 수정 버튼 {% endcomment %}
+      <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
+        <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
+        </form>
+        <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
+      </div>
+    </div>
+    <br>
+
+    {% comment %} 댓글내용 {% endcomment %}
+    <div>
+      {{ comment.content }}
+    </div>
+    <hr>
+    <br>
+  {% endfor %}
+  
+{% endblock %}

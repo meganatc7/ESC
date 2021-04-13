@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+  <div class="d-flex justify-content-center">
+    <img src="{% static 'img/esc.png' %}" alt="">
+  </div>
+  <form action="{% url 'accounts:login' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mt-3">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endfor %}
+    <a href="">※ 비밀번호가 기억이 안나시나요?</a>
+    <div class="d-grid mt-3">
+      <button class="btn btn-dark">로그인</button>
+    </div>
+  </form>
+{% endblock content %}
