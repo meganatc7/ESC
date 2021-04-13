@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <p>{{ article.category }}</p>
-  <h3>{{ article.title }}</h3>
+  <p>
+    {% if article.category == 1 %}
+      자유게시판
+    {% elif article.category == 2 %}
+      질문게시판
+    {% elif article.category == 3 %}
+      중고거래
+    {% endif %}
+  </p>
+  <h3>{{ article.title }}</h3><br>
+  {% comment %} 작성자, 작성시간 정보 {% endcomment %}
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
       <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
@@ -54,7 +63,6 @@
         </div>
       </div>
     </div>
-
   </div>
   {% endif %}
 
@@ -93,10 +101,10 @@
       {% comment %} 댓글 글쓴이 정보 {% endcomment %}
       <div class="d-flex align-items-center">
         <div class="flex-shrink-0">
-          <img src="#" alt="...">
+          <img src="{{ article.user.image.url }}" alt="..." width="30px" class="rounded-circle">
         </div>
         <div class="flex-grow-1 ms-3">
-          <p>{{ comment.user }}<br>
+          <p class="my-0">{{ comment.user }}<br>
           작성일 : {{ comment.created_at|date:"Y.m.d" }}</p>
         </div>
       </div>
@@ -109,6 +117,7 @@
         <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
       </div>
     </div>
+    <br>
 
     {% comment %} 댓글내용 {% endcomment %}
     <div>

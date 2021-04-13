@@ -1,20 +1,40 @@
 {% load static %}
-<div class="sticky-top">
-  <a href="{% url "articles:index" %}">
-    <img src="{% static 'img/로고.png' %}" alt="" width=80px>
-  </a>
-  {% if not request.user.is_authenticated %}
-    <a href="{% url 'accounts:signup' %}">회원가입</a>
-    <a href="{% url 'accounts:login' %}">로그인</a>
-  {% else %}
-    <form action="{% url 'accounts:logout' %}" method="POST">
-      {% csrf_token %}
-      <button>로그아웃</button>
-    </form>
-    <form action="{% url 'accounts:delete' %}" method="POST">
-      {% csrf_token %}
-      <button>회원탈퇴</button>
-    </form>
-    <a href="{% url 'accounts:update' %}">정보수정</a>
-  {% endif %}
-</div>
+<nav class="navbar navbar-expand-lg sticky-top bg-white">
+  <div class="container-fluid">
+    <div>
+      <a href="{% url "articles:index" %}">
+        <img src="{% static 'img/로고.png' %}" alt="" width=80px>
+      </a>
+    </div>    
+    <div class="" id="navbarNavDropdown">
+      <ul class="nav justify-content-center">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="{% url 'articles:index' %}" style="text-decoration: none; color: black;" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            📚 카테고리
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="{% url 'articles:board' 1 %}">자유게시판</a></li>
+            <li><a class="dropdown-item" href="{% url 'articles:board' 2 %}">질문게시판</a></li>
+            <li><a class="dropdown-item" href="{% url 'articles:board' 3 %}">중고거래</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center">
+      {% if not request.user.is_authenticated %}
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+        <a href="{% url 'accounts:login' %}">로그인</a>
+      {% else %}
+        <form action="{% url 'accounts:logout' %}" method="POST">
+          {% csrf_token %}
+          <button>로그아웃</button>
+        </form>
+        <form action="{% url 'accounts:delete' %}" method="POST">
+          {% csrf_token %}
+          <button>회원탈퇴</button>
+        </form>
+        <a href="{% url 'accounts:update' %}">정보수정</a>
+      {% endif %}
+    </div> 
+  </div>
+</nav>

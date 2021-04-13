@@ -14,4 +14,6 @@ urlpatterns = [
     path('<int:article_pk>/<int:comment_pk>/delete', views.comment_delete, name='comment_delete'),
     # 게시글 좋아요
     path('<int:article_pk>/like/', views.like, name='like'),
+    # 게시판
+    path('board/<int:category>/', views.board, name='board'),
 ]

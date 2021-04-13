@@ -2,6 +2,19 @@ from django import forms
 from .models import Article, Photo, Comment
 
 class ArticleForm(forms.ModelForm):
+    CATEGORY_A = '1'
+    CATEGORY_B = '2'
+    CATEGORY_C = '3'
+    CATEGORY_CHOICES = [
+        (CATEGORY_A, '자유 게시판'),
+        (CATEGORY_B, '질문 게시판'),
+        (CATEGORY_C, '중고거래'),
+    ]
+    category = forms.ChoiceField(
+        label='',
+        choices=CATEGORY_CHOICES, 
+    )
+    
     title = forms.CharField(
         label='제목',
         widget=forms.TextInput(
