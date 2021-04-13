@@ -56,26 +56,28 @@
     <div class="row">
       {% for article in articles %}
         {% for photo in article.photo_set.all %}
-          <div class="col-4 my-3">
-            <a href="{% url 'articles:detail' article.pk %}" style="text-decoration: none; color: black;">
-              <div class="card">
-                <img src="{{ photo.image.url }}" class="card-img-top" alt="...">
-                <div class="card-body py-3">
-                  <p class="card-title my-0 fw-bold text-center">
-                    {% if article.category == 1 %}
-                      [자유게시판]
-                    {% elif article.category == 2 %}
-                      [질문게시판]
-                    {% elif article.category == 3 %}
-                      [중고거래]
-                    {% endif %}
-                    {{ article.title }}<br>
-                    {{ article.user }} ✍
-                  </p>
+          {% if forloop.counter == 1 %}
+            <div class="col-4 my-3">
+              <a href="{% url 'articles:detail' article.pk %}" style="text-decoration: none; color: black;">
+                <div class="card">
+                  <img src="{{ photo.image.url }}" class="card-img-top" alt="...">
+                  <div class="card-body py-3">
+                    <p class="card-title my-0 fw-bold text-center">
+                      {% if article.category == 1 %}
+                        [자유게시판]
+                      {% elif article.category == 2 %}
+                        [질문게시판]
+                      {% elif article.category == 3 %}
+                        [중고거래]
+                      {% endif %}
+                      {{ article.title }}<br>
+                      {{ article.user }} ✍
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </a>
-          </div>          
+              </a>
+            </div>  
+          {% endif %}                  
         {% endfor %}
       {% endfor %} 
     </div>         
