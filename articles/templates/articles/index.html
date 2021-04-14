@@ -1,87 +1,101 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  {% load static %}
   {% comment %} 메인 화면 {% endcomment %}   
-  <div>
+  <div class="d-flex justify-content-between">
     {% if request.user.is_authenticated %}
       <h1>날씨 화면입니다.</h1>
       <a href="{% url 'articles:create' %}">글작성</a>
     {% else %}
-      <h1>Everyday Ssafy Community</h1>
-      <br>
-      <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
-      <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+      <div class="d-flex align-items-center mx-3">
+        <div>
+          <img src="{% static 'img/esc.png' %}" style="width: 35rem;" alt="">
+          <br><br><br>
+          <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
+          <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+        </div>        
+      </div>
+      <div>
+        <img src="{% static 'img/tigers.png' %}" style="width: 30rem;" alt="">
+      </div>
     {% endif %}
   </div>  
-  <br>
+  <br><br><br>
 
   {% comment %} 게시창 - 게시글 {% endcomment %}
   <div class="d-flex justify-content-end">
-    <a class="mx-2" href="" style="color: gray;"><i class="fas fa-align-justify"></i></a>
-    <a class="mx-2" href="" style="color: gray;"><i class="fas fa-th-large"></i></a>
+    <button class="btn btn-white" id="text"><i class="fas fa-align-justify"></i></button>
+    <button class="btn btn-white" id="image"><i class="fas fa-th-large"></i></button>
   </div>
   <hr><br>
 
   {% comment %} 텍스트 게시글 {% endcomment %}
-  {% for article in articles %}
-    <div class="card mb-3">
-      <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
-        <div class="card-body d-flex justify-content-between">
-          <div>
-            <h5 class="card-title fw-bold">
-              {% if article.category == 1 %}
-                [자유게시판]
-              {% elif article.category == 2 %}
-                [질문게시판]
-              {% elif article.category == 3 %}
-                [중고거래]
-              {% endif %}
-              {{ article.title }}
-            </h5>
-            <p class="my-0">{{ article.user }}</p>
+  <div id="texts">
+    {% for article in articles %}
+      <div class="card mb-3">
+        <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
+          <div class="card-body d-flex justify-content-between">
+            <div>
+              <h5 class="card-title fw-bold">
+                {% if article.category == 1 %}
+                  [자유게시판]
+                {% elif article.category == 2 %}
+                  [질문게시판]
+                {% elif article.category == 3 %}
+                  [중고거래]
+                {% endif %}
+                {{ article.title }}
+              </h5>
+              <p class="my-0">{{ article.user }}</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <p class="my-0">
+                ❤ {{ article.like_users.all|length }}&nbsp
+                🕔 {{ article.updated_at|date:"Y.m.d" }}
+              </p>
+            </div>
           </div>
-          <div class="d-flex align-items-center">
-            <p class="my-0">
-              ❤ {{ article.like_users.all|length }}&nbsp
-              🕔 {{ article.updated_at|date:"Y.m.d" }}
-            </p>
-          </div>
-        </div>
-      </a>
-    </div>
-  {% endfor %}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
   
   {% comment %} 이미지 게시글 {% endcomment %}
-  <div class="container d-flex justify-content-center">
-    <div class="row">
-      {% for article in articles %}
-        {% for photo in article.photo_set.all %}
-          {% if forloop.counter == 1 %}
-            <div class="col-4 my-3">
-              <a href="{% url 'articles:detail' article.pk %}" style="text-decoration: none; color: black;">
-                <div class="card">
-                  <img src="{{ photo.image.url }}" class="card-img-top" alt="...">
-                  <div class="card-body py-3">
-                    <p class="card-title my-0 fw-bold text-center">
-                      {% if article.category == 1 %}
-                        [자유게시판]
-                      {% elif article.category == 2 %}
-                        [질문게시판]
-                      {% elif article.category == 3 %}
-                        [중고거래]
-                      {% endif %}
-                      {{ article.title }}<br>
-                      {{ article.user }} ✍
-                    </p>
+  <div id="images">
+    <div class="container d-flex justify-content-center">
+      <div class="row">
+        {% for article in articles %}
+          {% for photo in article.photo_set.all %}
+            {% if forloop.counter == 1 %}
+              <div class="col-4 my-3">
+                <a href="{% url 'articles:detail' article.pk %}" style="text-decoration: none; color: black;">
+                  <div class="card">
+                    <img src="{{ photo.image.url }}" class="card-img-top" alt="...">                 
+                    <div class="card-body py-3">
+                      <p class="card-title my-0 fw-bold text-center">
+                        {% if article.category == 1 %}
+                          [자유게시판]
+                        {% elif article.category == 2 %}
+                          [질문게시판]
+                        {% elif article.category == 3 %}
+                          [중고거래]
+                        {% endif %}
+                        {{ article.title }}<br>
+                        {{ article.user }} ✍
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>  
-          {% endif %}                  
-        {% endfor %}
-      {% endfor %} 
-    </div>         
+                </a>
+              </div>  
+            {% endif %}                  
+          {% endfor %}
+        {% endfor %} 
+      </div>         
+    </div>
   </div>
+  
   <br><br><br><br>
-
+  <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
