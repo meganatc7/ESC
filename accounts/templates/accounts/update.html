@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+  <div class="d-flex justify-content-center">
+    <img src="{% static 'img/esc.png' %}" alt="">
+  </div>
   <div>
     <form action="{% url 'accounts:update' %}" method="POST">
       {% csrf_token %}
       {% for field in form %}
-        {% if field != form.password %}
+        {% if field != form.password and field != form.image %}
           <div>
             <div class="my-1"><strong>{{ field.label_tag }}</strong></div>
             {{ field }}

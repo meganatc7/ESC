@@ -4,6 +4,7 @@ const input = document.querySelector('#id_image')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 const confirmBtn = document.querySelector('#confirm-btn')
 
+
 // input변수에 이벤트
 input.addEventListener('change', ()=>{
 
@@ -33,18 +34,35 @@ input.addEventListener('change', ()=>{
     event.preventDefault()
     cropper.getCroppedCanvas().toBlob((blob)=>{
       console.log(blob)
+      const fd = new FormData()
+      const b_url = URL.createObjectURL(blob)
+
+      fd.append('file', blob, 'my-image.png')
+      fd.append('csrfmiddlewaretoken', csrf[0].value)
+      fd.append('url', b_url)
+      
 
       $.ajax({
         type: 'POST',
         url: '/accounts/cropped/',
+        // url: '{% url "accounts:cropped" %}',
         enctype: 'multipart/form-data',
-        data: blob,
+        data: fd,
+        dataType: 'json',
         success: function(response){
           console.log(response)
+          console.log(response.path)
+          const hiddenInput = document.querySelector('#hidden-input')
+          hiddenInput.value = response.path
+          alert('완료')
+          confirmBtn.classList.add('disabled')
         },
         error: function(error){
           console.log(error)
         },
+        cache: false,
+        contentType: false,
+        processData: false,
       })
     })
   })
