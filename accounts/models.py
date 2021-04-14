@@ -10,7 +10,7 @@ class User(AbstractUser):
     address = models.CharField(max_length=300)
     nickname = models.CharField(max_length=100, unique=True)
     introduction = models.TextField()
-    image = models.ImageField(upload_to='profile/%Y%m%d', blank=True)
+    image = models.ImageField(upload_to='profile/%Y%m%d', null=True, blank=True)
     followings = models.ManyToManyField(
         'self',
         symmetrical=False,

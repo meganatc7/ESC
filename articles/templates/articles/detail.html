@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  {% load static %}
   <p>
     {% if article.category == 1 %}
       자유게시판
@@ -106,9 +107,11 @@
       <div class="d-flex align-items-center">
         <div class="flex-shrink-0">
           <a href="{% url "accounts:profile" comment.user.nickname %}">
-            {% if comment.user.image.url %}
+            {% if comment.user.image %}
               <img src="{{ comment.user.image.url }}" alt="..." width="30px" class="rounded-circle">
-            {% endif %}
+            {% else %}
+              <img src="{% static 'img/cat.png' %}" alt="..." width="30px" class="rounded-circle">
+            {% endif %}            
           </a>
         </div>
         <div class="flex-grow-1 ms-3">
