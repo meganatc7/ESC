@@ -12,6 +12,7 @@ from .models import User
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+import json
 
 # Create your views here.
 # 가입 유저에게 이메일 보내는 함수
@@ -46,7 +47,10 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         # 유효성 검사
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            print(request.POST.get('cropped'))
+            user.image = request.POST.get('cropped')
+            user.save()
             # 유효성 검사 하고 난 뒤 이메일 보내기
             send_email(user.email)
             print('이메일 발송')
@@ -83,7 +87,11 @@ def login(request):
 
 
 def cropped(request):
-    print('확인',request)
+    print('확인',request.POST, request.FILES)
+    cropped = request.FILES.get('file')
+    # print(cropped)
+    path = default_storage.save(f'profile/{cropped.name}', cropped)
+    return JsonResponse({'path':path})
 
 
 @require_POST
@@ -107,6 +115,14 @@ def update(request):
         'form': form,
     }
     return render(request, 'accounts/update.html', context)
+
+
+def updateprofile(request):
+    if request.method == 'POST':
+        user = User.objects.get(pk=request.user.pk)
+        user.image = request.FILES.get('file')
+        user.save()
+        return JsonResponse({'message':'works'})
 
 
 @login_required

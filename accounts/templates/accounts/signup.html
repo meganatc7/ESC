@@ -18,6 +18,7 @@
           {% if field == form.image %}
             <div id="image-box"></div>
             <button type="button" class="btn btn-dark mt-2 not-visible" id="confirm-btn">확인</button>
+            <input type="hidden" id="hidden-input" name="cropped">
           {% endif %}
         </div>
         {% if field.errors %}
@@ -30,4 +31,5 @@
     </form>
   </div>
   <script src="{% static 'js/address.js' %}"></script>
+  <script src="{% static 'js/imgcrop.js' %}"></script>
 {% endblock content %}

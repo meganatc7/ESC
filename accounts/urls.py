@@ -11,6 +11,8 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     # 정보수정
     path('update/', views.update, name='update'),
+    # 프로필 수정
+    path('update/profile/', views.updateprofile, name='updateprofile'),
     # 삭제
     path('delete/', views.delete, name='delete'),
     # 이메일 인증
