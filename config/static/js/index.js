@@ -1,0 +1,11 @@
+$(document).ready(function(){
+  $("#images").hide();  
+  $("#text").click(function(){
+    $("#texts").show();
+    $("#images").hide();
+  });
+  $("#image").click(function(){
+    $("#images").show();
+    $("#texts").hide();
+  });
+});
