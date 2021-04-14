@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_safe, require_http_methods, require_POST
-from .forms import ArticleForm, PhotoFormSet, CommentForm
+from .forms import ArticleForm, PhotoFormSet, CommentForm, PhotoForm
 from .models import Article, Photo, Comment
 
 # Create your views here.
@@ -62,15 +62,25 @@ def detail(request, article_pk):
 @require_http_methods(['GET', 'POST'])
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    if request.method == 'POST':
-        article_form = ArticleForm(request.POST, instance=article)
+    photos = list(Photo.objects.filter(article_id=article_pk).all())
+    if request.method == 'POST':   
+        article_form = ArticleForm(request.POST, instance=article)  
+        if len(photos) > 0:      
+            for photo in photos:            
+                photo_form = PhotoForm(request.POST, request.FILES, instance=photo)
+                if photo_form.is_valid():
+                    photo_form.save()
         if article_form.is_valid():
             article_form.save()
             return redirect('articles:detail', article.pk)
     else:
         article_form = ArticleForm(instance=article)
+        photo_form = []
+        for photo in photos:
+            photo_form.append(PhotoForm(instance=photo))
     context = {
         'article_form': article_form,
+        'photo_form': photo_form,
         'article': article,
     }
     return render(request, 'articles/update.html', context)

@@ -21,7 +21,7 @@
       {{ form.id }}
       <fieldset class="aligned">
         <div class="form-row">
-          {{ form.image.label_tag }} {{ form.image }}
+          이미지{{ forloop.counter }} : {{ form.image }}
         </div>
         <div class="form-row">
           {{ form.title.label_tag }} {{ form.title }}

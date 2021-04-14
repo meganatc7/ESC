@@ -14,10 +14,14 @@
   {% comment %} 작성자, 작성시간 정보 {% endcomment %}
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
-      <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+      <a href="{% url 'accounts:profile' article.user.nickname %}">
+        <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+      </a>      
     </div>
     <div class="flex-grow-1 ms-3">
-      <p class="my-0">{{ article.user }}<br>
+      <a href="{% url 'accounts:profile' article.user.nickname %}" style="text-decoration: none; color: black;">
+        <p class="my-0">{{ article.user }}
+      </a><br>
       작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
     </div>
   </div> 
@@ -101,10 +105,16 @@
       {% comment %} 댓글 글쓴이 정보 {% endcomment %}
       <div class="d-flex align-items-center">
         <div class="flex-shrink-0">
-          <img src="{{ article.user.image.url }}" alt="..." width="30px" class="rounded-circle">
+          <a href="{% url "accounts:profile" comment.user.nickname %}">
+            {% if comment.user.image.url %}
+              <img src="{{ comment.user.image.url }}" alt="..." width="30px" class="rounded-circle">
+            {% endif %}
+          </a>
         </div>
         <div class="flex-grow-1 ms-3">
-          <p class="my-0">{{ comment.user }}<br>
+          <a href="{% url 'accounts:profile' comment.user.nickname %}" style="text-decoration: none; color: black;">
+            <p class="my-0">{{ comment.user }}
+          </a><br>
           작성일 : {{ comment.created_at|date:"Y.m.d" }}</p>
         </div>
       </div>
