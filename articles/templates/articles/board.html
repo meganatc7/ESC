@@ -46,7 +46,7 @@
     {% endif %}
   </h4>
   <hr>
-  {% for article in articles %}
+  {% for article in posts %}
     <div class="card mb-3">
       <a href="{% url "articles:detail" article.pk %}" style="text-decoration: none; color: black;">
         <div class="card-body d-flex justify-content-between">

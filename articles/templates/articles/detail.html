@@ -42,8 +42,8 @@
   {% endfor %}
 
   {% comment %} 내용 {% endcomment %}
-  <div class="my-5">
-    <h5>{{ article.content }}</h5>
+  <div class="my-5 mx-3">
+    <p style="font-size: 20px;">{{ article.content|linebreaksbr }}</p>
   </div>
   {% if request.user == article.user %}
     <hr>
@@ -141,7 +141,7 @@
 
     {% comment %} 댓글내용 {% endcomment %}
     <div>
-      {{ comment.content }}
+      {{ comment.content|linebreaksbr }}
     </div>
     <hr>
     <br>
