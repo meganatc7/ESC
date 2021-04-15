@@ -4,13 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_safe, require_http_methods, require_POST
 from .forms import ArticleForm, PhotoFormSet, CommentForm, PhotoForm
 from .models import Article, Photo, Comment
+from django.core.paginator import Paginator
 
 # Create your views here.
 @require_safe
 def index(request):
     articles = Article.objects.order_by('-pk')
+    # articles 테이블의 모든 레코드를 페이지네이터에 5개씩 저장
+    paginator = Paginator(articles, 5)
+    # request된 page 저장
+    page = request.GET.get('page')
+    # request된 page의 레코드 저장
+    posts = paginator.get_page(page)
     context = {
         'articles': articles,
+        'posts': posts,
     }
     return render(request, 'articles/index.html', context)
 
@@ -144,12 +152,14 @@ def like(request, article_pk):
 
 @require_safe
 def board(request, category):
-    articles = Article.objects.order_by('-pk')
-    category = category
+    articles = Article.objects.filter(category=category).order_by('-pk')
     likes = Article.objects.order_by('-like_users')[:3]
+    paginator = Paginator(articles, 5)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     context = {
         'articles': articles,
-        'category': category,
         'likes': likes,
+        'posts': posts,
     }
     return render(request, 'articles/board.html', context)

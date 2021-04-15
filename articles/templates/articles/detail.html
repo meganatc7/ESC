@@ -16,7 +16,12 @@
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
       <a href="{% url 'accounts:profile' article.user.nickname %}">
-        <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+        {% if article.user.image %}
+          <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+        {% else %}
+          <img src="{% static 'img/cat.png' %}" alt="..." width="50px" class="rounded-circle">
+        {% endif %}
+        
       </a>      
     </div>
     <div class="flex-grow-1 ms-3">
@@ -122,13 +127,15 @@
         </div>
       </div>
       {% comment %} 삭제 / 수정 버튼 {% endcomment %}
-      <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
-        <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
-          {% csrf_token %}
-          <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
-        </form>
-        <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
-      </div>
+      {% if comment.user == request.user %}
+        <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
+          <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
+          </form>
+          <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
+        </div>
+      {% endif %}      
     </div>
     <br>
 
