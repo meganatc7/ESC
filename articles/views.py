@@ -4,12 +4,51 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_safe, require_http_methods, require_POST
 from .forms import ArticleForm, PhotoFormSet, CommentForm, PhotoForm
 from .models import Article, Photo, Comment
+from forecasts import views as fore_views
+import requests, json, datetime
 
 # Create your views here.
 @require_safe
 def index(request):
+    # 날씨 정보 ###########################################################################
+    # 로그인 되어 있을 경우에만 실행
+    weather_info = {}
+    if request.user.is_authenticated:
+        add2xy = fore_views.add2xy
+        server_serviceKey = '3urgccFNfwIp7ePyvIBfqtDLrK7Sxy2YZkHZ4lc33Cf%2F242KukfpnMSZ8wPOQCh716qplOd0Pp3AtewChHHfrg%3D%3D'
+        
+        user_address = request.user.address[:2]
+        user_nx, user_ny = add2xy.get(user_address, add2xy['서울'])
+
+        now_date, now_hour = fore_views.time_setting()
+        ultra_srt_ncst_url = f'http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey={server_serviceKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date={now_date}&base_time={now_hour}&nx={user_nx}&ny={user_ny}'
+
+        ncst_response = requests.get(ultra_srt_ncst_url)
+
+        ncst_data_dict = ncst_response.json()  # 딕셔너리 자료형
+        c_PTY = ncst_data_dict['response']['body']['items']['item'][0]['obsrValue']
+        if c_PTY == '0':
+            c_PTY = '비가 오지 않습니다.'
+        elif c_PTY == '1':
+            c_PTY = '비가 옵니다.'
+        elif c_PTY == '3':
+            c_PTY = '눈이 옵니다...ㅜ'
+        else:
+            c_PTY = '비 또는 눈이 약하게 떨어지고 있습니다.'
+
+        c_T1H = ncst_data_dict['response']['body']['items']['item'][3]['obsrValue']
+
+        weather_info = {
+            'c_TIME': now_hour[:2] + ':' + now_hour[2:],
+            'c_T1H': c_T1H,
+            'c_PTY': c_PTY,
+            'user_address': user_address,
+        }
+    
+    # 게시글 ###########################################################################
     articles = Article.objects.order_by('-pk')
     context = {
+        'weather_info': weather_info,
         'articles': articles,
     }
     return render(request, 'articles/index.html', context)
