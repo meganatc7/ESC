@@ -59,20 +59,21 @@
       </div>
       <a href="{% url 'articles:create' %}">글작성</a>
     {% else %}
-      <div class="d-flex align-items-center mx-3">
+      <div class="mb-5 mx-3">
+        <div class="d-flex align-items-center">
+          <div>
+            <img src="{% static 'img/esc.png' %}" style="width: 35rem;" alt="">
+            <br><br><br>
+            <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
+            <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+          </div>        
+        </div>
         <div>
-          <img src="{% static 'img/esc.png' %}" style="width: 35rem;" alt="">
-          <br><br><br>
-          <a class="btn btn-primary" style="width: 100px;" href="{% url 'accounts:login' %}" role="button">Login</a>
-          <a class="btn btn-warning" style="width: 100px;" href="{% url 'accounts:signup' %}" role="button">Signup</a>
-        </div>        
-      </div>
-      <div>
-        <img src="{% static 'img/tigers.png' %}" style="width: 30rem;" alt="">
-      </div>
+          <img src="{% static 'img/tigers.png' %}" style="width: 30rem;" alt="">
+        </div>
+      </div>      
     {% endif %}
   </div>  
-  <br><br><br>
 
   {% comment %} 게시창 - 게시글 {% endcomment %}
   <div class="d-flex justify-content-end">
@@ -153,7 +154,7 @@
   </div>
 
   {% comment %} 이미지 게시글 {% endcomment %}
-  <div id="images">
+  <div id="images" style="display: none;">
     <div class="container d-flex justify-content-center">
       <div class="row">
         {% for article in articles %}

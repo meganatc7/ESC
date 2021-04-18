@@ -47,7 +47,7 @@ def index(request):
         }
     
     # 게시글 ###########################################################################
-    articles = Article.objects.order_by('-pk')
+    articles = Article.objects.order_by('-created_at')
     # articles 테이블의 모든 레코드를 페이지네이터에 5개씩 저장
     paginator = Paginator(articles, 5)
     # request된 page 저장
@@ -95,7 +95,7 @@ def detail(request, article_pk):
     photos = Photo.objects.filter(article_id=article_pk).all()
     # 댓글
     comment_form = CommentForm()
-    comments = article.comment_set.order_by('-pk')
+    comments = article.comment_set.order_by('-created_at')
     context = {
         'article': article,
         'photos': photos,
@@ -166,6 +166,27 @@ def comment_create(request, article_pk):
     return redirect('accounts:login')
 
 
+# 댓글 수정
+@login_required
+@require_http_methods(['GET', 'POST'])
+def comment_update(request, article_pk, comment_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    comment = Comment.objects.get(pk=comment_pk)
+    if request.method == "POST":
+        comment_update_form = CommentForm(request.POST, instance=comment)
+        if comment_update_form.is_valid():
+            comment_update_form.save()
+            return redirect('articles:detail', article.pk)
+    else:
+        comment_update_form = CommentForm(instance=comment)
+    context = {
+        'article': article,
+        'comment': comment,
+        'comment_update_form': comment_update_form,
+    }
+    return render(request, 'articles/detail.html', context)
+
+
 # 댓글 삭제
 @require_POST
 def comment_delete(request, article_pk, comment_pk):
@@ -192,7 +213,7 @@ def like(request, article_pk):
 
 @require_safe
 def board(request, category):
-    articles = Article.objects.filter(category=category).order_by('-pk')
+    articles = Article.objects.filter(category=category).order_by('-created_at')
     likes = Article.objects.order_by('-like_users')[:3]
     paginator = Paginator(articles, 5)
     page = request.GET.get('page')
@@ -203,3 +224,19 @@ def board(request, category):
         'posts': posts,
     }
     return render(request, 'articles/board.html', context)
+
+
+@require_POST
+def search(request):
+    articles = Article.objects.order_by("-created_at")
+    search = request.POST.get('search')
+    search_articles = []
+    for article in articles:
+        if search in article.title:
+            search_articles.append(article)
+    context = {
+        'articles': articles,
+        'search': search,
+        'search_articles': search_articles,
+    }
+    return render(request, 'articles/search.html', context)

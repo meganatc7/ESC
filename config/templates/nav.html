@@ -21,12 +21,16 @@
           </ul>
         </li>
       </ul>
-    </div>
-    {% comment %} 검색기록 {% endcomment %}
-    <div>
-    </div>
-    {% comment %} 계정관련 버튼 {% endcomment %}
+    </div>      
+    {% comment %} nav 내용물들 {% endcomment %}
     <div class="d-flex align-items-center">
+      {% comment %} 검색 {% endcomment %}
+      <form class="d-flex mx-5" action="{% url 'articles:search' %}" method="POST">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" name="search" id="search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+      {% comment %} 계정 관련 {% endcomment %}
       {% if not request.user.is_authenticated %}
         <a class="btn" href="{% url 'accounts:signup' %}">회원가입</a>
         <a class="btn" href="{% url 'accounts:login' %}">로그인</a>
