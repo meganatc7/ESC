@@ -46,6 +46,11 @@ class PhotoForm(forms.ModelForm):
     image = forms.ImageField(
         label='이미지',
         required=False,
+        widget = forms.FileInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
     )
     class Meta:
         model = Photo

@@ -129,6 +129,7 @@ def update(request, article_pk):
         'article_form': article_form,
         'photo_form': photo_form,
         'article': article,
+        'photos': photos,
     }
     return render(request, 'articles/update.html', context)
 

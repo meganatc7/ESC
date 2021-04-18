@@ -32,6 +32,12 @@
       </fieldset>
       <br>
     {% endfor %}
+    <div class="mb-2">
+      <p>현재 이미지:</p>
+      {% for photo in photos %}
+        <img src="{{ photo.image.url }}" alt="" width="100px;">
+      {% endfor %}
+    </div>
     <br>
 
     {% comment %} 버튼 부분 {% endcomment %}
