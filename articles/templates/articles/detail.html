@@ -16,7 +16,12 @@
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
       <a href="{% url 'accounts:profile' article.user.nickname %}">
-        <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+        {% if article.user.image %}
+          <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
+        {% else %}
+          <img src="{% static 'img/cat.png' %}" alt="..." width="50px" class="rounded-circle">
+        {% endif %}
+        
       </a>      
     </div>
     <div class="flex-grow-1 ms-3">
@@ -37,8 +42,8 @@
   {% endfor %}
 
   {% comment %} 내용 {% endcomment %}
-  <div class="my-5">
-    <h5>{{ article.content }}</h5>
+  <div class="my-5 mx-3">
+    <p style="font-size: 20px;">{{ article.content|linebreaksbr }}</p>
   </div>
   {% if request.user == article.user %}
     <hr>
@@ -86,7 +91,7 @@
   <br><br>
 
   {% comment %} 댓글 작성 {% endcomment %}
-  <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
+  <h5 class="fw-bold"><i class="far fa-comment-dots"></i> 댓글 {{ comments|length }}개</h5>
   <hr>
   <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
     {% csrf_token %}
@@ -122,19 +127,21 @@
         </div>
       </div>
       {% comment %} 삭제 / 수정 버튼 {% endcomment %}
-      <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
-        <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
-          {% csrf_token %}
-          <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
-        </form>
-        <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
-      </div>
+      {% if comment.user == request.user %}
+        <div class="d-flex align-items-center position-absolute top-50 end-0 translate-middle-y">
+          <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
+          </form>
+          <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
+        </div>
+      {% endif %}      
     </div>
     <br>
 
     {% comment %} 댓글내용 {% endcomment %}
     <div>
-      {{ comment.content }}
+      {{ comment.content|linebreaksbr }}
     </div>
     <hr>
     <br>
