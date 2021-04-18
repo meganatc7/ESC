@@ -165,6 +165,27 @@ def comment_create(request, article_pk):
     return redirect('accounts:login')
 
 
+# 댓글 수정
+@login_required
+@require_http_methods(['GET', 'POST'])
+def comment_update(request, article_pk, comment_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    comment = Comment.objects.get(pk=comment_pk)
+    if request.method == "POST":
+        comment_update_form = CommentForm(request.POST, instance=comment)
+        if comment_update_form.is_valid():
+            comment_update_form.save()
+            return redirect('articles:detail', article.pk)
+    else:
+        comment_update_form = CommentForm(instance=comment)
+    context = {
+        'article': article,
+        'comment': comment,
+        'comment_update_form': comment_update_form,
+    }
+    return render(request, 'articles/detail.html', context)
+
+
 # 댓글 삭제
 @require_POST
 def comment_delete(request, article_pk, comment_pk):

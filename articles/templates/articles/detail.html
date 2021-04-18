@@ -21,7 +21,6 @@
         {% else %}
           <img src="{% static 'img/cat.png' %}" alt="..." width="50px" class="rounded-circle">
         {% endif %}
-        
       </a>      
     </div>
     <div class="flex-grow-1 ms-3">
@@ -107,7 +106,7 @@
 
   {% comment %} 댓글 표시 {% endcomment %}
   {% for comment in comments %}
-    <div class="position-relative">
+    <div class="position-relative mb-3">
       {% comment %} 댓글 글쓴이 정보 {% endcomment %}
       <div class="d-flex align-items-center">
         <div class="flex-shrink-0">
@@ -133,18 +132,29 @@
             {% csrf_token %}
             <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
           </form>
-          <a class="mx-1" href="#" style="text-decoration: none; color: black;">수정</a>
+          {% comment %} <button class="btn btn-white mx-1" id="commentUpdate" onClick="update{{ comment.id }}">수정</button> {% endcomment %}
         </div>
-      {% endif %}      
+      {% endif %} 
     </div>
-    <br>
-
-    {% comment %} 댓글내용 {% endcomment %}
-    <div>
+    {% comment %} 댓글 내용 {% endcomment %}
+    <div id="commentContent{{ comment.id }}">
       {{ comment.content|linebreaksbr }}
     </div>
+    {% comment %} 댓글 수정 폼 {% endcomment %}
+    <div id="commentUpdateForm{{ comment.id }}" style="display: none;">
+      <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+        {% csrf_token %}
+        <div class="d-flex justify-content-center">
+          {{ comment_form.content }}
+        </div>
+        <br>
+        <div class="d-flex justify-content-end mx-4">
+          <button type="submit" class="btn btn-warning btn-sm mx-1">수정 완료</button>
+          <button type="submit" class="btn btn-secondary btn-sm mx-1" id="commentUpdateCancel{{ comment.id }}">수정 취소</button>
+        </div>
+      </form>
+    </div>  
     <hr>
     <br>
-  {% endfor %}
-  
+  {% endfor %}  
 {% endblock %}
