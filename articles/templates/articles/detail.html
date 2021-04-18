@@ -91,7 +91,7 @@
   <br><br>
 
   {% comment %} 댓글 작성 {% endcomment %}
-  <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
+  <h5 class="fw-bold"><i class="far fa-comment-dots"></i> 댓글 {{ comments|length }}개</h5>
   <hr>
   <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
     {% csrf_token %}

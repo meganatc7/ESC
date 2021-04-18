@@ -1,11 +1,13 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg sticky-top bg-white">
   <div class="container-fluid">
+    {% comment %} 로고 {% endcomment %}
     <div>
       <a href="{% url "articles:index" %}">
         <img src="{% static 'img/로고.png' %}" alt="" width=80px>
       </a>
-    </div>    
+    </div> 
+    {% comment %} 카테고리 {% endcomment %}
     <div class="" id="navbarNavDropdown">
       <ul class="nav justify-content-center">
         <li class="nav-item dropdown">
@@ -20,6 +22,10 @@
         </li>
       </ul>
     </div>
+    {% comment %} 검색기록 {% endcomment %}
+    <div>
+    </div>
+    {% comment %} 계정관련 버튼 {% endcomment %}
     <div class="d-flex align-items-center">
       {% if not request.user.is_authenticated %}
         <a class="btn" href="{% url 'accounts:signup' %}">회원가입</a>

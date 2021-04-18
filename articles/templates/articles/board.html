@@ -24,6 +24,7 @@
             </div>
             <div class="d-flex align-items-center">
               <p class="my-0">
+                💬 {{ article.comment_set.all|length }}&nbsp
                 ❤ {{ like.like_users.all|length }}&nbsp
                 🕔 {{ like.updated_at|date:"Y.m.d" }}
               </p>
@@ -56,6 +57,7 @@
           </div>
           <div class="d-flex align-items-center">
             <p class="my-0">
+              💬 {{ article.comment_set.all|length }}&nbsp
               ❤ {{ article.like_users.all|length }}&nbsp
               🕔 {{ article.updated_at|date:"Y.m.d" }}
             </p>
