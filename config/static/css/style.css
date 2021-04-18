@@ -1,3 +1,11 @@
 .not-visible {
   display: none;
 }
+
+.a-none {
+  text-decoration: none;
+}
+
+.ccyccy {
+  background-color: red;
+}

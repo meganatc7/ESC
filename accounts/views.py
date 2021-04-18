@@ -140,10 +140,12 @@ def delete(request):
 @require_safe
 def profile(request, nickname):
     person = get_object_or_404(get_user_model(), nickname=nickname)
+    articles = person.article_set.all()
     form = CustomUserChangeForm()
     context = {
         'person': person,
         'form': form,
+        'articles': articles,
     }
     return render(request, 'accounts/profile.html', context)
 
