@@ -1,11 +1,62 @@
 {% extends 'base.html' %}
 
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'forecasts/style.css' %}">
+{% endblock  %}
+
 {% block content %}
   {% load static %}
   {% comment %} 메인 화면 {% endcomment %}   
   <div class="d-flex justify-content-around">
     {% if request.user.is_authenticated %}
-      <h1>날씨 화면입니다.</h1>
+      {% comment %} 메인페이지에서 날씨 정보 {% endcomment %}
+      <div class='my-3'>
+        <form action="{% url 'forecasts:detail' %}" method="GET">
+          <button class="btn w-100">
+            <div class="row">
+              {% comment %} showing weather image {% endcomment %}
+              <div class="col-2"></div>
+              <div class="col-4 d-flex" style="font-size: 2em;">
+                {% if weather_info.c_PTY == "비가 오지 않습니다." %}
+                  <div class="icon sunny">
+                  <div class="sun bg-white">
+                    <div class="rays"></div>
+                  </div>
+                </div>
+                {% elif weather_info.c_PTY == "비가 옵니다." %}
+                  <div class="icon rainy">
+                    <div class="cloud"></div>
+                    <div class="rain"></div>
+                  </div>
+                {% elif weather_info.c_PTY == "눈이 옵니다...ㅜ" %}
+                  <div class="icon flurries">
+                    <div class="cloud"></div>
+                    <div class="snow">
+                      <div class="flake"></div>
+                      <div class="flake"></div>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="icon cloudy">
+                    <div class="cloud"></div>
+                    <div class="cloud"></div>
+                  </div>
+                {% endif %}
+              </div>
+              {% comment %} present weather data {% endcomment %}
+              <div class="col-4 d-flex align-items-center justify-content-center">
+                <div>
+                  <p class="fs-4">{{ weather_info.user_address }} 날씨 정보</p>
+                  <p class="">시간: {{ weather_info.c_TIME }}</p>
+                  <p class="">기온: {{ weather_info.c_T1H }} &deg;C</p>
+                </div>
+              </div>
+              <div class="col-3"></div>
+            </div>
+          </button>
+        </form>
+      </div>
       <a href="{% url 'articles:create' %}">글작성</a>
     {% else %}
       <div class="d-flex align-items-center mx-3">

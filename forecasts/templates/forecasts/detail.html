@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'forecasts/style.css' %}">
+  <script src="https://kit.fontawesome.com/057b377c97.js" crossorigin="anonymous"></script>
+  {% comment %} Chart.js cdn {% endcomment %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock  %}
+
+{% block content %}
+  <h2 class="my-5 text-center text-dark mb-0">{{ user_address }} 날씨 정보</h2>
+  {% comment %} 날씨 그림 보여주기 {% endcomment %}
+  <div class="row">
+    {% comment %} 현재 {% endcomment %}
+    <div class="col-4 d-flex justify-content-center">
+      {% if c_PTY == "비가 오지 않습니다." %}
+        <div class="icon sunny">
+        <div class="sun">
+          <div class="rays"></div>
+        </div>
+      </div>
+      {% elif c_PTY == "비가 옵니다." %}
+        <div class="icon rainy">
+          <div class="cloud"></div>
+          <div class="rain"></div>
+        </div>
+      {% elif c_PTY == "눈이 옵니다...ㅜ" %}
+        <div class="icon flurries">
+          <div class="cloud"></div>
+          <div class="snow">
+            <div class="flake"></div>
+            <div class="flake"></div>
+          </div>
+        </div>
+      {% else %}
+        <div class="icon cloudy">
+          <div class="cloud"></div>
+          <div class="cloud"></div>
+        </div>
+      {% endif %}
+    </div>
+    {% comment %} 예측 (1h, 2h, 3h, 4h) {% endcomment %}
+    {% for data in processed_pred_data %}
+      <div class="col-2 d-flex justify-content-center align-items-center">
+        {% if data.pty == "비가 오지 않습니다." %}
+          {% if data.sky == "말금" %}
+            <div class="icon sunny" style="font-size: 0.5em;">
+              <div class="sun">
+                <div class="rays"></div>
+              </div>
+            </div>
+          {% elif data.sky == "구름 많음" %}
+            <div class="icon cloudy" style="font-size: 0.5em;">
+              <div class="cloud"></div>
+            </div>
+          {% else %}
+            <div class="icon sun-shower" style="font-size: 0.5em;">
+              <div class="cloud"></div>
+              <div class="sun">
+                <div class="rays"></div>
+              </div>
+            </div>
+          {% endif %}
+        {% elif data.pty == "비가 옵니다." %}
+          <div class="icon rainy" style="font-size: 0.5em;">
+            <div class="cloud"></div>
+            <div class="rain"></div>
+          </div>
+        {% elif data.pty == "눈이 옵니다...ㅜ" %}
+          <div class="icon flurries" style="font-size: 0.5em;">
+            <div class="cloud"></div>
+            <div class="snow">
+              <div class="flake"></div>
+              <div class="flake"></div>
+            </div>
+          </div>
+        {% else %}
+          <div class="icon cloudy" style="font-size: 0.5em;">
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% comment %} 시간 {% endcomment %}
+  <div class="row">
+    {% comment %} 현재 {% endcomment %}
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <p class="fw-bold fs-5 mt-0">{{ c_TIME }}</p>
+    </div>
+    {% comment %} 예측 (1h, 2h, 3h, 4h) {% endcomment %}
+    {% for data in processed_pred_data %}
+      <div class="col-2 d-flex align-items-center justify-content-center">
+        <p class="fw-bold mt-0">{{ data.time }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  {% comment %} 기온 그래프 {% endcomment %}
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-9">
+      <canvas id="tempChart" height="120"></canvas>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  {% comment %} 기온 수치 {% endcomment %}
+  {% comment %} <div class="row">
+    <div class="col-4"><p class="fw-bold">{{ c_T1H }} &deg;C</p></div>
+    {% for data in processed_pred_data %}
+      <div class="col-2"><p>{{ data.temp }} &deg;C</p></div>
+    {% endfor %}
+  </div> {% endcomment %}
+  <script>
+    let tempChart = document.getElementById('tempChart').getContext('2d');
+
+    let lineChart = new Chart(tempChart, {
+      type: 'line',
+      data: {
+        labels: ['{{ c_TIME }} 기온',
+            '{{ processed_pred_data.0.time }} 기온',
+            '{{ processed_pred_data.1.time }} 기온', 
+            '{{ processed_pred_data.2.time }} 기온', 
+            '{{ processed_pred_data.3.time }} 기온'
+          ],
+        datasets: [{
+          label: '',
+          data: [
+            '{{ c_T1H }}',
+            {{ processed_pred_data.0.temp }},
+            {{ processed_pred_data.1.temp }},
+            {{ processed_pred_data.2.temp }},
+            {{ processed_pred_data.3.temp }}
+          ],
+          backgroundColor: [
+            'green',
+            'black',
+            'black',
+            'black',
+            'black'
+          ],
+          borderWidth: [
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          borderColor: 'rgba(0, 0, 0, .3)',
+          hoverBorderWidth: 10,
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            display: false,
+            grid: {
+              display: false,
+            }
+          },
+          y: {
+            display: false,
+            grid: {
+              display: false,
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false,
+          }
+        }
+      }
+    })
+  </script>
+{% endblock  %}

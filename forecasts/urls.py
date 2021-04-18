@@ -5,5 +5,5 @@ from . import views
 
 app_name = 'forecasts'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('detail/', views.detail, name='detail'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

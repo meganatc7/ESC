@@ -1,31 +1,16 @@
-html { box-sizing: border-box; }
-html *,
-html *:before,
-html *:after { box-sizing: inherit; }
-
 body {
-  max-width: 42em;
-  padding: 2em;
-  margin: 0 auto;
-  color: white;
-  font-family: 'Roboto', sans-serif;
-  text-align: center;
-  background-color: currentColor;
+  color: #fff;
+  background-color: #fff;
 }
 
 h1 {
-  margin-bottom: 1.375em;
   color: black;
-  font-weight: 100;
-  font-size: 2em;
-  text-transform: uppercase;
 }
+
 p,
 a {
   color: black;
-  font-size: small;
 }
-p { margin: 1.375rem 0; }
 
 .icon {
   position: relative;

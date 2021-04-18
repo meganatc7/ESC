@@ -6,14 +6,24 @@ from pprint import pprint
 # 브라우저에서 직접 url로 데이터 받아보기
 # http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey=3urgccFNfwIp7ePyvIBfqtDLrK7Sxy2YZkHZ4lc33Cf%2F242KukfpnMSZ8wPOQCh716qplOd0Pp3AtewChHHfrg%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&base_date=20210408&base_time=2100&nx=58&ny=74
 
-locs2xy = {
-    '광주': [],
+add2xy = {
+    '광주': [58, 74],
     '서울': [60, 127],
     '부산': [98, 76],
     '대구': [89, 90],
     '인천': [55, 124],
-    '경기': [],
-
+    '대전': [67, 100],
+    '울산': [102, 84],
+    '세종': [66, 103],
+    '경기': [60, 120],
+    '강원': [73, 134],
+    '충북': [69, 107],
+    '충남': [68, 100],
+    '전북': [63, 89],
+    '전남': [51, 67],
+    '경북': [89, 91],
+    '경남': [91, 77],
+    '제주': [52, 38],
 }
 
 
@@ -111,8 +121,13 @@ def processing_data(data_dict):
 
 # Create your views here.
 @login_required
-def index(request):
+def detail(request):
     server_serviceKey = '3urgccFNfwIp7ePyvIBfqtDLrK7Sxy2YZkHZ4lc33Cf%2F242KukfpnMSZ8wPOQCh716qplOd0Pp3AtewChHHfrg%3D%3D'
+    
+    # user 주소에 해당하는 지역의 날씨를 보여준다.
+    user_address = request.user.address[:2]
+    # default 값은 서울로 지정했다.
+    user_nx, user_ny = add2xy.get(user_address, add2xy['서울'])
 
     # 현재 시간으로는 날씨 정보 조회가 불가능 하므로, 커스터 마이징 해서 요청을 보냄
     now_date, now_hour = time_setting()
@@ -121,11 +136,11 @@ def index(request):
     print(f'now_hour: {now_hour}')
     
     # 초 단기 실황 조회
-    ultra_srt_ncst_url = f'http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey={server_serviceKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date={now_date}&base_time={now_hour}&nx=58&ny=74'
+    ultra_srt_ncst_url = f'http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst?serviceKey={server_serviceKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date={now_date}&base_time={now_hour}&nx={user_nx}&ny={user_ny}'
 
 
     # 초 단기 예보 조회 url
-    ultra_srt_fcst_url = f'http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst?serviceKey={server_serviceKey}&numOfRows=100&pageNo=1&dataType=JSON&base_date={now_date}&base_time={now_hour}&nx=58&ny=74'
+    ultra_srt_fcst_url = f'http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst?serviceKey={server_serviceKey}&numOfRows=100&pageNo=1&dataType=JSON&base_date={now_date}&base_time={now_hour}&nx={user_nx}&ny={user_ny}'
 
 
     # 동네 예보 조회 url
@@ -158,7 +173,8 @@ def index(request):
         'c_TIME': now_hour[:2] + ':' + now_hour[2:],
         'c_T1H': c_T1H,
         'c_PTY': c_PTY,
+        'user_address': user_address,
         'processed_pred_data': processed_pred_data,
     }
 
-    return render(request, 'forecasts/index.html', context)
+    return render(request, 'forecasts/detail.html', context)
