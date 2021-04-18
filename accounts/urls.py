@@ -21,4 +21,10 @@ urlpatterns = [
     path('<str:nickname>/profile/', views.profile, name='profile'),
     # crop사진 임시 저장
     path('cropped/', views.cropped, name='cropped'),
+    # 비밀번호 변경
+    path('change_password/', views.changepw, name='changepw'),
+    # 비밀번호 찾기
+    path('find_password/', views.findpw, name='findpw'),
+    path('pw/auth/', views.authpw, name='authpw'),
+    path('pw/reset/', views.resetpw, name='resetpw'),
 ]

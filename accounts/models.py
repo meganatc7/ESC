@@ -11,6 +11,7 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=100, unique=True)
     introduction = models.TextField()
     image = models.ImageField(upload_to='profile/%Y%m%d', null=True, blank=True)
+    auth = models.CharField(max_length=20, blank=True)
     followings = models.ManyToManyField(
         'self',
         symmetrical=False,

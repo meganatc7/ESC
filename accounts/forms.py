@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -35,7 +35,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     email = forms.CharField(
-        label = '이메일',
+        label = '이메일(해당 이메일로 인증메일이 전송됩니다.)',
         widget = forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -174,3 +174,67 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm):
         model = get_user_model()
         fields = ('email', 'address', 'nickname', 'image', 'introduction',)
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label = '기존 비밀번호',
+        widget = forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+    new_password1 = forms.CharField(
+        label = '새 비밀번호',
+        widget = forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+    new_password2 = forms.CharField(
+        label = '새 비밀번호 확인',
+        widget = forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+            },
+        )
+    )
+    class Meta(PasswordChangeForm):
+        model = get_user_model()
+        fields = '__all__'
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.CharField(
+        label = '회원가입 시 입력한 이메일을 입력해주세요.',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control mt-2',
+            },
+        )
+    )
+    class Meta(PasswordResetForm):
+        model = get_user_model()
+        fields = '__all__'
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label = '새 비밀번호',
+        widget = forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+            },
+        )
+    )
+    new_password2 = forms.CharField(
+        label = '새 비밀번호 확인',
+        widget = forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+            },
+        )
+    )
+    class Meta(SetPasswordForm):
+        model = get_user_model()
+        fields = '__all__'

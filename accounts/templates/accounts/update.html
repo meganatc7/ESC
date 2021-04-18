@@ -16,8 +16,8 @@
             {% if field == form.address %}
               <input class="btn btn-dark my-2" type="button" onclick="DaumPostcode()" value="주소 검색"></input>
             {% endif %}
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
         {% if field.errors %}
           {% for error in field.errors %}
             <div class="alert alert-warning" role="alert"><strong>{{ error }}</strong></div>
