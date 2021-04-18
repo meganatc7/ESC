@@ -16,4 +16,6 @@ urlpatterns = [
     path('<int:article_pk>/like/', views.like, name='like'),
     # 게시판
     path('board/<int:category>/', views.board, name='board'),
+    # 게시물 검색
+    path('search/', views.search, name='search'),
 ]

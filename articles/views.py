@@ -47,7 +47,7 @@ def index(request):
         }
     
     # 게시글 ###########################################################################
-    articles = Article.objects.order_by('-pk')
+    articles = Article.objects.order_by('-created_at')
     # articles 테이블의 모든 레코드를 페이지네이터에 5개씩 저장
     paginator = Paginator(articles, 5)
     # request된 page 저장
@@ -95,7 +95,7 @@ def detail(request, article_pk):
     photos = Photo.objects.filter(article_id=article_pk).all()
     # 댓글
     comment_form = CommentForm()
-    comments = article.comment_set.order_by('-pk')
+    comments = article.comment_set.order_by('-created_at')
     context = {
         'article': article,
         'photos': photos,
@@ -191,7 +191,7 @@ def like(request, article_pk):
 
 @require_safe
 def board(request, category):
-    articles = Article.objects.filter(category=category).order_by('-pk')
+    articles = Article.objects.filter(category=category).order_by('-created_at')
     likes = Article.objects.order_by('-like_users')[:3]
     paginator = Paginator(articles, 5)
     page = request.GET.get('page')
@@ -202,3 +202,19 @@ def board(request, category):
         'posts': posts,
     }
     return render(request, 'articles/board.html', context)
+
+
+@require_POST
+def search(request):
+    articles = Article.objects.order_by("-created_at")
+    search = request.POST.get('search')
+    search_articles = []
+    for article in articles:
+        if search in article.title:
+            search_articles.append(article)
+    context = {
+        'articles': articles,
+        'search': search,
+        'search_articles': search_articles,
+    }
+    return render(request, 'articles/search.html', context)
