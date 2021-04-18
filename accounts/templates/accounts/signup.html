@@ -27,9 +27,16 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
-      <button class="btn btn-dark mt-2">회원가입</button>
+      <button class="btn btn-dark mt-2" id="signup-btn">회원가입</button>
     </form>
   </div>
   <script src="{% static 'js/address.js' %}"></script>
   <script src="{% static 'js/imgcrop.js' %}"></script>
+  <script>
+    const signUpBtn = document.queryselector('#signup-btn')
+    signUpBtn.addEventListener('click',() => {
+      alert('전송된 인증메일을 통해 로그인 해주세요.')
+    })
+
+  </script>
 {% endblock content %}
