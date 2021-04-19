@@ -1,27 +1,29 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg sticky-top bg-white">
-  <div class="container-fluid">
+  <div class="container-fluid justify-content-between">
     {% comment %} 로고 {% endcomment %}
-    <div>
-      <a href="{% url "articles:index" %}">
-        <img src="{% static 'img/로고.png' %}" alt="" width=80px>
-      </a>
+    <div class="ms-5 d-flex">
+      <div>
+        <a href="{% url "articles:index" %}">
+          <img src="{% static 'img/로고.png' %}" alt="" width=80px>
+        </a>
+      </div>
+      <div class="ms-5 border" id="navbarNavDropdown">
+        <ul class="nav justify-content-center">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{% url 'articles:index' %}" style="text-decoration: none; color: black;" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              📚 카테고리
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="{% url 'articles:board' 1 %}">자유게시판</a></li>
+              <li><a class="dropdown-item" href="{% url 'articles:board' 2 %}">질문게시판</a></li>
+              <li><a class="dropdown-item" href="{% url 'articles:board' 3 %}">중고거래</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>      
     </div> 
     {% comment %} 카테고리 {% endcomment %}
-    <div class="" id="navbarNavDropdown">
-      <ul class="nav justify-content-center">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="{% url 'articles:index' %}" style="text-decoration: none; color: black;" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            📚 카테고리
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="{% url 'articles:board' 1 %}">자유게시판</a></li>
-            <li><a class="dropdown-item" href="{% url 'articles:board' 2 %}">질문게시판</a></li>
-            <li><a class="dropdown-item" href="{% url 'articles:board' 3 %}">중고거래</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>      
     {% comment %} nav 내용물들 {% endcomment %}
     <div class="d-flex align-items-center">
       {% comment %} 검색 {% endcomment %}
@@ -35,12 +37,18 @@
         <a class="btn" href="{% url 'accounts:signup' %}">회원가입</a>
         <a class="btn" href="{% url 'accounts:login' %}">로그인</a>
       {% else %}
-        <form action="{% url 'accounts:logout' %}" method="POST">
-          {% csrf_token %}
-          <button class="btn">로그아웃</button>
-        </form>
-        {% comment %} <a href="{% url 'accounts:update' %}">[정보수정]</a> {% endcomment %}
-        <a class="btn" href="{% url 'accounts:profile' request.user.nickname %}">마이 프로필</a>
+        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle me-5" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="{{ request.user.image.url }}" alt="" width="30px" class="rounded-circle">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <li>
+            <form action="{% url 'accounts:logout' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn">로그아웃</button>
+            </form>
+          </li>
+          <li><a class="btn" href="{% url 'accounts:profile' request.user.nickname %}">마이 프로필</a></li>
+        </ul>
       {% endif %}
     </div> 
   </div>
