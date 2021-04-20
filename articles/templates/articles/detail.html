@@ -132,7 +132,7 @@
             {% csrf_token %}
             <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
           </form>
-          {% comment %} <button class="btn btn-white mx-1" id="commentUpdate" onClick="update{{ comment.id }}">수정</button> {% endcomment %}
+          <button class="btn btn-white mx-1 commentUpdateBtn" id="commentUpdate{{ comment.id }}" data-id={{ comment.id }}>수정</button>
         </div>
       {% endif %} 
     </div>
@@ -157,4 +157,5 @@
     <hr>
     <br>
   {% endfor %}  
+  <script src="{% static 'js/comment.js' %}"></script>
 {% endblock %}
