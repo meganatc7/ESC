@@ -24,7 +24,7 @@
             </div>
             <div class="d-flex align-items-center">
               <p class="my-0">
-                💬 {{ article.comment_set.all|length }}&nbsp
+                💬 {{ like.comment_set.all|length }}&nbsp
                 ❤ {{ like.like_users.all|length }}&nbsp
                 🕔 {{ like.updated_at|date:"Y.m.d" }}
               </p>
@@ -37,15 +37,15 @@
   <br><br>
 
   {% comment %} 게시글 {% endcomment %}
-  <h4 class="text-center fw-bold">
+  <h3 class="text-center fw-bold">
     {% if category == 1 %}
       자유게시판
-    {% elif  category == 2 %}
+    {% elif category == 2 %}
       질문게시판
     {% elif  category == 3 %}
       중고거래
     {% endif %}
-  </h4>
+  </h3>
   <hr>
   {% for article in posts %}
     <div class="card mb-3">
@@ -69,43 +69,44 @@
   <br>
 
   {% comment %} 페이지네이션 {% endcomment %}
-  {% if posts.count > 5 %}
-    <div class="d-flex justify-content-center">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">        
-            {% if posts.has_previous %}
-              <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a></li>
-            {% else %}
-              <li class="page-item disabled">
-              <a class="page-link" href="?page=1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-              </li>
-              <li class="page-item disabled"><a class="page-link">Previous</a></li>
-            {% endif %}
-            {% if posts.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
-              <li class="page-item">
-              <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-              </li>
-            {% else %}
-              <li class="page-item disabled"><a class="page-link">Next</a></li>
-              <li class="page-item disabled">
-              <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-              </li>
-            {% endif %}      
-          </ul>
-        </nav>
-      </div>    
+  <div class="d-flex justify-content-center">
+    {% if articles.count > 5 %}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">        
+          {% if posts.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a></li>
+          {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="?page=1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>
+            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+          {% endif %}
+          {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+            <li class="page-item">
+            <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><a class="page-link">Next</a></li>
+            <li class="page-item disabled">
+            <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+          {% endif %}      
+        </ul>
+      </nav>
     </div>
-  {% endif %}  
+    {% endif %}     
+  </div>
+
 {% endblock %}

@@ -47,7 +47,7 @@ def index(request):
         }
     
     # 게시글 ###########################################################################
-    articles = Article.objects.order_by('-created_at')
+    articles = Article.objects.order_by('-updated_at')
     # articles 테이블의 모든 레코드를 페이지네이터에 5개씩 저장
     paginator = Paginator(articles, 5)
     # request된 page 저장
@@ -184,7 +184,7 @@ def comment_update(request, article_pk, comment_pk):
                 comment_update_form.save()
                 return redirect('articles:detail', article.pk)
     return redirect('accounts:login')
-    
+
 
 # 댓글 삭제
 @require_POST
@@ -221,6 +221,7 @@ def board(request, category):
         'articles': articles,
         'likes': likes,
         'posts': posts,
+        'category': category,
     }
     return render(request, 'articles/board.html', context)
 
