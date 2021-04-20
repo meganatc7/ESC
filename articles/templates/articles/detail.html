@@ -28,6 +28,7 @@
         <p class="my-0">{{ article.user }}
       </a><br>
       작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
+      <input type="hidden" id="article" value="{{ article.pk }}"></input>
     </div>
   </div> 
   <hr>
@@ -77,15 +78,16 @@
 
   {% comment %} 좋아요 {% endcomment %}
   <div class="d-flex align-items-center">
-    <form action="{% url 'articles:like' article.pk %}" method="POST">
-      {% csrf_token %}
+    <div>
       {% if request.user not in article.like_users.all %}
-        <button class="btn btn-white"><i class="far fa-heart"></i></button>
+        <button class="btn btn-white" id="like"><i class="far fa-heart" id="heart"></i></button>
       {% else %}
-        <button class="btn btn-white"><i class="fas fa-heart" style="color: tomato;"></i></button>
+        <button class="btn btn-white" id="like"><i class="fas fa-heart" style="color: tomato;" id="heart"></i></button>
       {% endif %}
-    </form>
-    <p class="fw-bold"><br>{{ article.like_users.all|length }}명이 이 게시물을 좋아합니다.</p>
+    </div>
+    <div>
+      <p class="fw-bold" id="like-number">{{ article.like_users.all|length }}명이 이 게시물을 좋아합니다.</p>
+    </div>
   </div>
   <br><br>
 
@@ -158,4 +160,5 @@
     <br>
   {% endfor %}  
   <script src="{% static 'js/comment.js' %}"></script>
+  <script src="{% static 'js/like.js' %}"></script>
 {% endblock %}
