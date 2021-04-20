@@ -69,41 +69,43 @@
   <br>
 
   {% comment %} 페이지네이션 {% endcomment %}
-  <div class="d-flex justify-content-center">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">        
-          {% if posts.has_previous %}
-            <li class="page-item">
-            <a class="page-link" href="?page=1" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a></li>
-          {% else %}
-            <li class="page-item disabled">
-            <a class="page-link" href="?page=1" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-            </li>
-            <li class="page-item disabled"><a class="page-link">Previous</a></li>
-          {% endif %}
-          {% if posts.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
-            <li class="page-item">
-            <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled"><a class="page-link">Next</a></li>
-            <li class="page-item disabled">
-            <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-            </li>
-          {% endif %}      
-        </ul>
-      </nav>
-    </div>    
-  </div>
+  {% if posts.count > 5 %}
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">        
+            {% if posts.has_previous %}
+              <li class="page-item">
+              <a class="page-link" href="?page=1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a></li>
+            {% else %}
+              <li class="page-item disabled">
+              <a class="page-link" href="?page=1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              </li>
+              <li class="page-item disabled"><a class="page-link">Previous</a></li>
+            {% endif %}
+            {% if posts.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+              <li class="page-item">
+              <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><a class="page-link">Next</a></li>
+              <li class="page-item disabled">
+              <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+              </li>
+            {% endif %}      
+          </ul>
+        </nav>
+      </div>    
+    </div>
+  {% endif %}  
 {% endblock %}

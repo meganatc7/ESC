@@ -96,11 +96,16 @@ def detail(request, article_pk):
     # 댓글
     comment_form = CommentForm()
     comments = article.comment_set.order_by('-created_at')
+    # 댓글 수정
+    comment_update_forms = []
+    for comment in comments:
+        comment_update_forms.append(CommentForm(instance=comment))
     context = {
         'article': article,
         'photos': photos,
         'comment_form': comment_form,
         'comments': comments,
+        "comment_update_forms": comment_update_forms,
     }
     return render(request, 'articles/detail.html', context)
 
@@ -172,20 +177,14 @@ def comment_create(request, article_pk):
 def comment_update(request, article_pk, comment_pk):
     article = get_object_or_404(Article, pk=article_pk)
     comment = Comment.objects.get(pk=comment_pk)
-    if request.method == "POST":
-        comment_update_form = CommentForm(request.POST, instance=comment)
-        if comment_update_form.is_valid():
-            comment_update_form.save()
-            return redirect('articles:detail', article.pk)
-    else:
-        comment_update_form = CommentForm(instance=comment)
-    context = {
-        'article': article,
-        'comment': comment,
-        'comment_update_form': comment_update_form,
-    }
-    return render(request, 'articles/detail.html', context)
-
+    if request.user == comment.user:
+        if request.method == "POST":
+            comment_update_form = CommentForm(request.POST, instance=comment)
+            if comment_update_form.is_valid():
+                comment_update_form.save()
+                return redirect('articles:detail', article.pk)
+    return redirect('accounts:login')
+    
 
 # 댓글 삭제
 @require_POST

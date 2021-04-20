@@ -38,7 +38,11 @@
         <a class="btn" href="{% url 'accounts:login' %}">로그인</a>
       {% else %}
         <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle me-5" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="{{ request.user.image.url }}" alt="" width="30px" class="rounded-circle">
+          {% if article.user.image %}
+            <img src="{{ article.user.image.url }}" alt="..." width="30px" class="rounded-circle">
+          {% else %}
+            <img src="{% static 'img/cat.png' %}" alt="..." width="30px" class="rounded-circle">
+          {% endif %}
         </button>
         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <li>
