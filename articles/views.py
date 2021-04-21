@@ -7,6 +7,7 @@ from .models import Article, Photo, Comment
 from django.core.paginator import Paginator
 from forecasts import views as fore_views
 import requests, json, datetime
+from django.http import JsonResponse
 
 # Create your views here.
 @require_safe
@@ -201,12 +202,17 @@ def comment_delete(request, article_pk, comment_pk):
 @require_POST
 def like(request, article_pk):
     if request.user.is_authenticated:
+        like = 0
         article = get_object_or_404(Article, pk=article_pk)
         if article.like_users.filter(pk=request.user.pk).exists():
             article.like_users.remove(request.user)
+            like = 0
+            like_number = article.like_users.all().count()
         else:
             article.like_users.add(request.user)
-        return redirect('articles:detail', article.pk)
+            like_number = article.like_users.all().count()
+            like = 1
+        return JsonResponse({'message':'works', 'like': like, 'like_number': like_number})
     return redirect('accounts:login')
 
 
