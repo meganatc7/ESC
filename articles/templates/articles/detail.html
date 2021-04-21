@@ -85,6 +85,7 @@
             <button class="btn btn-link" style="text-decoration: none; color: black;">삭제</button>
           </form>
           <button class="btn btn-white mx-1 commentUpdateBtn" id="commentUpdate{{ comment.id }}" data-id={{ comment.id }}>수정</button>
+          <button class="btn btn-white mx-1 commentUpdateCancelBtn" id="commentUpdateCancel{{ comment.id }}" data-id={{ comment.id }} style="display: none;">수정</button>
         </div>
       {% endif %} 
     </div>
@@ -95,15 +96,19 @@
     </div>
     {% comment %} 댓글 수정 폼 {% endcomment %}
     <div id="commentUpdateForm{{ comment.id }}" style="display: none;">
-      <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+      <form action="{% url 'articles:comment_update' article.pk comment.pk %}" method="POST">
         {% csrf_token %}
         <div class="d-flex justify-content-center">
-          {{ comment_form.content }}
+          {% for comment_update_form in comment_update_forms %}
+            {% if comment.id == comment_update_form.instance.id %}
+              {{ comment_update_form.content }}
+            {% endif %}
+          {% endfor %}                  
         </div>
         <br>
         <div class="d-flex justify-content-end mx-4">
           <button type="submit" class="btn btn-warning btn-sm mx-1">수정 완료</button>
-          <button type="submit" class="btn btn-secondary btn-sm mx-1" id="commentUpdateCancel{{ comment.id }}">수정 취소</button>
+          <button type="button" class="btn btn-secondary btn-sm mx-1 commentUpdateCancelBtn" id="commentUpdateCancel{{ comment.id }}" data-id={{ comment.id }}>수정 취소</button>
         </div>
       </form>
     </div>  

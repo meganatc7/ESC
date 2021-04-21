@@ -54,8 +54,8 @@
     {% endfor %}
 
     {% comment %} 페이지네이션 {% endcomment %}
-    <br><br>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center my-5">
+      {% if articles.count > 5 %}
       <nav aria-label="Page navigation example">
         <ul class="pagination">        
           {% if posts.has_previous %}
@@ -90,7 +90,8 @@
           {% endif %}      
         </ul>
       </nav>
-    </div>    
+      {% endif %} 
+    </div>           
   </div>
 
   {% for article in articles %}

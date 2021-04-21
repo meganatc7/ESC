@@ -4,6 +4,8 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'forecasts/style.css' %}">
   <script src="https://kit.fontawesome.com/057b377c97.js" crossorigin="anonymous"></script>
+  {% comment %} Chart.js cdn {% endcomment %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock  %}
 
 {% block content %}
@@ -100,7 +102,7 @@
     <div class="col-2 px-0"></div>
     <div class="col-9 px-0">
       <div class="w-100">
-        <canvas id="tempChart" style="height:10vh; width:50vw"></canvas>
+        <canvas id="tempChart" style="height:8vh; width:50vw"></canvas>
       </div>
     </div>
     <div class="col-1"></div>
@@ -113,23 +115,22 @@
     {% endfor %}
   </div> {% endcomment %}
   <script>
-    Chart.plugins.register(ChartDataLabels);
-    let ctx = document.getElementById('tempChart').getContext('2d');
-    let labels = [
-      '{{ c_TIME }}',
-      '{{ processed_pred_data.0.time }}',
-      '{{ processed_pred_data.1.time }}',
-      '{{ processed_pred_data.2.time }}',
-      '{{ processed_pred_data.3.time }}',
+    var labels = [
+      '{{ c_TIME }} 기온',
+      '{{ processed_pred_data.0.time }} 기온',
+      '{{ processed_pred_data.1.time }} 기온', 
+      '{{ processed_pred_data.2.time }} 기온', 
+      '{{ processed_pred_data.3.time }} 기온'
     ];
-    let colorHex = ['green', 'black', 'black', 'black', 'black']
+    let tempChart = document.getElementById('tempChart').getContext('2d');
 
-    let tempChart = new Chart(ctx, {
-      plugins: [ChartDataLabels],
+    let lineChart = new Chart(tempChart, {
       type: 'line',
       data: {
+        labels: labels,
         datasets: [{
-          backgroundColor: colorHex,
+          backgroundColor: 'black',
+          borderColor: 'grey',
           data: [
             {{ c_T1H }},
             {{ processed_pred_data.0.temp }},
@@ -138,59 +139,43 @@
             {{ processed_pred_data.3.temp }}
           ],
           datalabels: {
-            align: 'end',
-            anchor: 'end'
+            align: 'start',
           }
-          }],
-        labels: labels
+        }]
       },
       options: {
-        responsive: true,
         plugins: {
           datalabels: {
-            backgroundColor: (context) => {
+            backgroundColor: function(context) {
               return context.dataset.backgroundColor;
             },
-            borderRadius: 3,
-            color: '#fff',
+            borderRadius: 4,
+            color: 'black',
             font: {
-              weight: 'bold',
-              size: '10'
+              weight: 'bold'
             },
-            formatter: (value) => {
-              return value + '°C';
-            }
-          }
-        },
-        legend: {
-          display: false
-        },
-        layout: {
-          padding: {
-            top: 13,
-            right: 15,
-            bottom: 10,
-            left: 20
-          }
-        },
-        elements: {
-          line: {
-            fill: false
+            padding: 6
+          },
+          tooltip: {
+            enabled: false
+          },
+          legend: {
+            display: false,
           }
         },
         scales: {
-          xAxes: [{
+          x: {
             display: false,
             grid: {
-              display: false
+              display: false,
             }
-          }],
-          yAxes: [{
+          },
+          y: {
             display: false,
             grid: {
-              display: false
+              display: false,
             }
-          }]
+          }
         }
       }
     })

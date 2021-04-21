@@ -19,6 +19,7 @@ def index(request):
     # 초단기 실황 데이터 받아오기
     # 초단기 실황 데이터 아이템 개수: 8
     ncst_response = requests.get(ultra_srt_ncst_url)
+    print(ncst_response.text)
 
     ncst_data_dict = ncst_response.json()  # 딕셔너리 자료형
     c_PTY = ncst_data_dict['response']['body']['items']['item'][0]['obsrValue']
@@ -35,6 +36,7 @@ def index(request):
 
     # 초단기 예보 데이터 받아오기
     srt_fcst_response = requests.get(ultra_srt_fcst_url)
+    print(srt_fcst_response.text)
     srt_fcst_dict = srt_fcst_response.json()  # 딕셔너리 자료형
     
     processed_pred_data = processing_data(srt_fcst_dict)
