@@ -141,6 +141,7 @@ secret_file = os.path.join(BASE_DIR, 'secret.json')
 with open(secret_file, 'r') as f:
     secrets = json.loads(f.read())
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 587
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = secrets.get("GOOGLE_ID")
