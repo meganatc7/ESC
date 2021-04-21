@@ -125,7 +125,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'config' / 'static',
-    BASE_DIR / 'forecasts' / 'static',
 ]
 
 MEDIA_URL = '/media/'
@@ -133,16 +132,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.User'
-
-import os
-import json
-
-secret_file = os.path.join(BASE_DIR, 'secret.json')
-with open(secret_file, 'r') as f:
-    secrets = json.loads(f.read())
-
-EMAIL_PORT = 587
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = secrets.get("GOOGLE_ID")
-EMAIL_HOST_PASSWORD = secrets.get("GOOGLE_PW")
-EMAIL_USE_TLS = True

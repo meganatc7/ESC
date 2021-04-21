@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_safe, require_http_methods, require_POST
-from .forms import ArticleForm, PhotoFormSet, CommentForm, PhotoForm
+from .forms import ArticleForm, PhotoFormSet, CommentForm
 from .models import Article, Photo, Comment
 from django.core.paginator import Paginator
 from forecasts import views as fore_views
@@ -10,7 +9,6 @@ import requests, json, datetime
 from django.http import JsonResponse
 
 # Create your views here.
-@require_safe
 def index(request):
     # 날씨 정보 ###########################################################################
     # 로그인 되어 있을 경우에만 실행
@@ -56,15 +54,11 @@ def index(request):
     # request된 page의 레코드 저장
     posts = paginator.get_page(page)
     context = {
-        'weather_info': weather_info,
         'articles': articles,
-        'posts': posts,
     }
     return render(request, 'articles/index.html', context)
 
 
-@login_required
-@require_http_methods(['GET', 'POST'])
 def create(request):
     if request.method == 'POST':
         article_form = ArticleForm(request.POST)
@@ -89,7 +83,6 @@ def create(request):
     return render(request, 'articles/create.html', context)
 
 
-@require_safe
 def detail(request, article_pk):
     # 게시물, 사진
     article = get_object_or_404(Article, pk=article_pk)
@@ -106,49 +99,23 @@ def detail(request, article_pk):
     return render(request, 'articles/detail.html', context)
 
 
-@login_required
-@require_http_methods(['GET', 'POST'])
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    photos = list(Photo.objects.filter(article_id=article_pk).all())
-    if request.method == 'POST':   
-        article_form = ArticleForm(request.POST, instance=article)  
-        if len(photos) > 0:      
-            for photo in photos:            
-                photo_form = PhotoForm(request.POST, request.FILES, instance=photo)
-                if photo_form.is_valid():
-                    photo_form.save()
+    if request.method == 'POST':
+        article_form = ArticleForm(request.POST, instance=article)
         if article_form.is_valid():
-            article_form.save()
-            return redirect('articles:detail', article.pk)
+                article_form.save()
+                return redirect('articles:detail', article.pk)
     else:
         article_form = ArticleForm(instance=article)
-        photo_form = []
-        for photo in photos:
-            photo_form.append(PhotoForm(instance=photo))
     context = {
         'article_form': article_form,
-        'photo_form': photo_form,
         'article': article,
-        'photos': photos,
     }
     return render(request, 'articles/update.html', context)
 
 
-@require_POST
-def delete(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-    photos = Photo.objects.filter(article_id=article_pk).all()
-    if request.user.is_authenticated:
-        if request.user == article.user:
-            photos.delete()
-            article.delete()
-            return redirect('articles:index')
-    return redirect('articles:detail', article.pk)
-
-    
 # 댓글 작성
-@require_POST
 def comment_create(request, article_pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
@@ -200,8 +167,8 @@ def comment_delete(request, article_pk, comment_pk):
 
       
 # 게시글 좋아요
-@require_POST
 def like(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
     if request.user.is_authenticated:
         like = 0
         article = get_object_or_404(Article, pk=article_pk)

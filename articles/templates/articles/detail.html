@@ -1,32 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% load static %}
-  <p>
-    {% if article.category == 1 %}
-      자유게시판
-    {% elif article.category == 2 %}
-      질문게시판
-    {% elif article.category == 3 %}
-      중고거래
-    {% endif %}
-  </p>
-  <h3>{{ article.title }}</h3><br>
-  {% comment %} 작성자, 작성시간 정보 {% endcomment %}
+  <p>{{ article.category }}</p>
+  <h3>{{ article.title }}</h3>
   <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
-      <a href="{% url 'accounts:profile' article.user.nickname %}">
-        {% if article.user.image %}
-          <img src="{{ article.user.image.url }}" alt="..." width="50px" class="rounded-circle">
-        {% else %}
-          <img src="{% static 'img/cat.png' %}" alt="..." width="50px" class="rounded-circle">
-        {% endif %}
-      </a>      
+      <img src="#" alt="...">
     </div>
     <div class="flex-grow-1 ms-3">
-      <a href="{% url 'accounts:profile' article.user.nickname %}" style="text-decoration: none; color: black;">
-        <p class="my-0">{{ article.user }}
-      </a><br>
+      <p>{{ article.user }}<br>
       작성일 : {{ article.created_at|date:"Y.m.d" }}</p>
       <input type="hidden" id="article" value="{{ article.pk }}"></input>
     </div>
@@ -36,43 +18,19 @@
   {% comment %} 이미지 {% endcomment %}
   {% for photo in photos %}
     <div class="d-flex justify-content-center">
-      <img src="{{ photo.image.url }}" width="90%" alt="{{ photo.image }}">
+      <img src="{{ photo.image.url }}" alt="{{ photo.image }}">
     </div>    
     <br>
   {% endfor %}
 
   {% comment %} 내용 {% endcomment %}
-  <div class="my-5 mx-3">
-    <p style="font-size: 20px;">{{ article.content|linebreaksbr }}</p>
+  <div class="my-5">
+    <h5>{{ article.content }}</h5>
   </div>
   {% if request.user == article.user %}
-    <hr>
     <div class="d-flex justify-content-end mx-4">
     <a class="btn btn-success mx-1" href="{% url 'articles:update' article.pk %}" role="button">수정</a>
-    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      삭제
-    </button>
-
-    {% comment %} 모달 {% endcomment %}
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            <h5 class="fw-bold">정말 삭제하시겠습니까?</h5>
-          </div>
-          <div class="modal-footer">
-            <form action="{% url 'articles:delete' article.pk %}" mehtod="POST">
-              {% csrf_token %}
-              <button class="btn btn-primary">Yes</button>
-            </form>            
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <a class="btn btn-secondary mx-1" href="#" role="button">삭제</a>
   </div>
   {% endif %}
 
@@ -92,7 +50,7 @@
   <br><br>
 
   {% comment %} 댓글 작성 {% endcomment %}
-  <h5 class="fw-bold"><i class="far fa-comment-dots"></i> 댓글 {{ comments|length }}개</h5>
+  <h5 class="fw-bold">💬 댓글 {{ comments|length }}개</h5>
   <hr>
   <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
     {% csrf_token %}
@@ -108,22 +66,14 @@
 
   {% comment %} 댓글 표시 {% endcomment %}
   {% for comment in comments %}
-    <div class="position-relative mb-3">
+    <div class="position-relative">
       {% comment %} 댓글 글쓴이 정보 {% endcomment %}
       <div class="d-flex align-items-center">
         <div class="flex-shrink-0">
-          <a href="{% url "accounts:profile" comment.user.nickname %}">
-            {% if comment.user.image %}
-              <img src="{{ comment.user.image.url }}" alt="..." width="30px" class="rounded-circle">
-            {% else %}
-              <img src="{% static 'img/cat.png' %}" alt="..." width="30px" class="rounded-circle">
-            {% endif %}            
-          </a>
+          <img src="#" alt="...">
         </div>
         <div class="flex-grow-1 ms-3">
-          <a href="{% url 'accounts:profile' comment.user.nickname %}" style="text-decoration: none; color: black;">
-            <p class="my-0">{{ comment.user }}
-          </a><br>
+          <p>{{ comment.user }}<br>
           작성일 : {{ comment.created_at|date:"Y.m.d" }}</p>
         </div>
       </div>
@@ -138,9 +88,10 @@
         </div>
       {% endif %} 
     </div>
-    {% comment %} 댓글 내용 {% endcomment %}
-    <div id="commentContent{{ comment.id }}">
-      {{ comment.content|linebreaksbr }}
+
+    {% comment %} 댓글내용 {% endcomment %}
+    <div>
+      {{ comment.content }}
     </div>
     {% comment %} 댓글 수정 폼 {% endcomment %}
     <div id="commentUpdateForm{{ comment.id }}" style="display: none;">

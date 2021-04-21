@@ -1,25 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% load static %}
-  <div class="d-flex justify-content-center">
-    <img src="{% static 'img/esc.png' %}" alt="">
-  </div>
   <div>
-    <form action="{% url 'accounts:signup' %}" method="POST" id="signup-form" enctype="multipart/form-data">
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
         <div>
-          <div class="my-1"><strong>{{ field.label_tag }}</strong></div>
+          {{ field.label_tag }}
           {{ field }}
-          {% if field == form.address %}
-            <input class="btn btn-dark my-2" type="button" onclick="DaumPostcode()" value="주소 검색"></input>
-          {% endif %}
-          {% if field == form.image %}
-            <div id="image-box"></div>
-            <button type="button" class="btn btn-dark mt-2 not-visible" id="confirm-btn">확인</button>
-            <input type="hidden" id="hidden-input" name="cropped">
-          {% endif %}
         </div>
         {% if field.errors %}
           {% for error in field.errors %}
@@ -27,16 +15,7 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
-      <button class="btn btn-dark mt-2" id="signup-btn">회원가입</button>
+      <button class="btn btn-dark">완료</button>
     </form>
   </div>
-  <script src="{% static 'js/address.js' %}"></script>
-  <script src="{% static 'js/imgcrop.js' %}"></script>
-  <script>
-    const signUpBtn = document.queryselector('#signup-btn')
-    signUpBtn.addEventListener('click',() => {
-      alert('전송된 인증메일을 통해 로그인 해주세요.')
-    })
-
-  </script>
 {% endblock content %}
