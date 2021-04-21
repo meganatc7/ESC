@@ -18,9 +18,11 @@ likeBtn.addEventListener('click',() => {
       like_number = document.querySelector('#like-number')
       if (response.like == 0) {
         heart.style.color = ''
+        heart.className = 'far fa-heart'
         console.log(response.like_number)
       } else {
         heart.style.color = 'tomato'
+        heart.className = 'fas fa-heart'
         console.log(response.like_number)
       }
       console.log(like_number)
