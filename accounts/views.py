@@ -17,15 +17,32 @@ import json
 import string, random
 
 # Create your views here.
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 # 가입 유저에게 이메일 보내는 함수
 def send_email(email):
     url = f'http://127.0.0.1:8000/accounts/{email}/signin'
-    send_mail(
-        '이메일 인증을 해주세요',
-        f'해당 주소로 이동해주세요 {url}', # 해당 url클릭 시 signin으로
-        'meganatc7@gmail.com',
-        [f'{email}'],
+    html_content = render_to_string('accounts/email_template.html', {
+        'title': 'test email',
+        'url': url,
+    })
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        #subject
+        'ESC 이메일 인증',
+        #content
+        text_content,
+        #from email
+        settings.EMAIL_HOST_USER,
+        #to
+        [email],
     )
+
+    email.attach_alternative(html_content,'text/html')
+    email.send()
 
 
 @require_safe
