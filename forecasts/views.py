@@ -148,7 +148,8 @@ def detail(request):
     
     # 초단기 실황 데이터 받아오기
     # 초단기 실황 데이터 아이템 개수: 8
-    ncst_response = requests.get(ultra_srt_ncst_url)
+    for _ in range(3):
+        ncst_response = requests.get(ultra_srt_ncst_url)
     print(ncst_response.text)
 
     ncst_data_dict = ncst_response.json()  # 딕셔너리 자료형

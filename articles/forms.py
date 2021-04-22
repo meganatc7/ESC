@@ -12,8 +12,14 @@ class ArticleForm(forms.ModelForm):
         (CATEGORY_C, '중고거래'),
     ]
     category = forms.ChoiceField(
-        label='',
+        label='카테고리를 선택해주세요.',
         choices=CATEGORY_CHOICES, 
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+                'width': '500px',
+            }
+        )
     )
     
     title = forms.CharField(

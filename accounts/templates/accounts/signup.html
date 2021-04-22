@@ -2,10 +2,11 @@
 
 {% block content %}
   {% load static %}
-  <div class="d-flex justify-content-center">
-    <img src="{% static 'img/esc.png' %}" alt="">
+  <div class="d-flex justify-content-center my-5">
+    {% comment %} <img src="{% static 'img/esc.png' %}" alt=""> {% endcomment %}
+    <h1 style="font-size:80px"><strong><sapn class="text-warning">E</span><span style="color:#3F729B;">veryday</span> S<span style="color:#3F729B;">safy</span> C<span style="color:#3F729B;">ommunity</span></strong></h1>
   </div>
-  <div>
+  <div class="mb-5">
     <form action="{% url 'accounts:signup' %}" method="POST" id="signup-form" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}

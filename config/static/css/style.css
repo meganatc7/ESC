@@ -6,14 +6,19 @@
   text-decoration: none;
 }
 
-.ccyccy {
-  background-color: red;
-}
-
 p {
   margin: 0;
 }
 
 a {
   text-decoration: none;
+}
+
+h6 {
+  margin: 0;
+}
+
+.custom-margin {
+  left: auto !important;
+  right: 0 !important;
 }

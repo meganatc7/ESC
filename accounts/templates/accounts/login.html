@@ -5,7 +5,8 @@
   <div class="row d-flex-column justify-content-center align-items-center" style="height:700px">
     <form action="{% url 'accounts:login' %}" method="POST">
       <div style="text-align: center;">
-        <h1><img src="{% static 'img/esc.png' %}" alt=""></h1>
+        {% comment %} <h1><img src="{% static 'img/esc.png' %}" alt=""></h1> {% endcomment %}
+        <h1 style="font-size:80px"><strong><sapn class="text-warning">E</span><span style="color:#3F729B;">veryday</span> S<span style="color:#3F729B;">safy</span> C<span style="color:#3F729B;">ommunity</span></strong></h1>
       </div>
       {% csrf_token %}
       {% if messages %}

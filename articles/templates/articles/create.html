@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container" style="width: 50rem;">
+<div class="container mt-5" style="width: 50rem;">
   <h2 class="text-center">게시글 작성하기 📄</h2>
   <hr>
 
@@ -9,11 +9,21 @@
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in article_form %}
-      <div>
+      {% if forloop.first %}
+        <div class="row mb-3">
           {{ field.label_tag }}
-          {{ field }}              
-      </div>    
-      <br>
+          <div class="col-3 pe-0">
+            {{ field }}
+          </div>
+          <div class="col-9 ps-1">📌</div>
+        </div>
+      {% else %}
+        <div>
+            {{ field.label_tag }}
+            {{ field }}              
+        </div>    
+        <br>
+      {% endif %}
     {% endfor %}
     <!-- 폼셋에 들어있는 각 폼을 다루는 경우, {{ photo_formset.management_form }} 반드시 추가!! -->
     {{ photo_formset.management_form }}
