@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import FileInput
 from .models import Article, Photo, Comment
 
 class ArticleForm(forms.ModelForm):
@@ -44,7 +45,6 @@ class ArticleForm(forms.ModelForm):
 
 class PhotoForm(forms.ModelForm):
     image = forms.ImageField(
-        label='이미지',
         required=False,
         widget = forms.FileInput(
             attrs={
@@ -54,7 +54,9 @@ class PhotoForm(forms.ModelForm):
     )
     class Meta:
         model = Photo
-        fields = ('image',)        
+        fields = ('image',)
+
+
 # 이미지 폼을 갖고와 엮어서 폼셋으로 만들기
 PhotoFormSet = forms.inlineformset_factory(Article, Photo, form=PhotoForm, extra=5)
 

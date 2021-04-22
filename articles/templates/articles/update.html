@@ -16,28 +16,27 @@
       <br>
     {% endfor %}
     <!-- 폼셋에 들어있는 각 폼을 다루는 경우, {{ photo_formset.management_form }} 반드시 추가!! -->
-    {{ photo_formset.management_form }}
+    {{ photo_form.management_form }}
     {% for form in photo_form %}
-      {{ form.id }}
-      <fieldset class="aligned">
-        <div class="form-row">
-          {{ form.image }}
-        </div>
-        {% comment %} <div class="form-row">
-          {{ form.title.label_tag }} {{ form.title }}
-        </div>
-        <div class="form-row">
-          {{ form.description.label_tag }} {{ form.description }}
-        </div> {% endcomment %}
-      </fieldset>
-      <br>
-    {% endfor %}
-    <div class="mb-2">
-      <p>현재 이미지:</p>
       {% for photo in photos %}
-        <img src="{{ photo.image.url }}" alt="" width="100px;">
-      {% endfor %}
-    </div>
+        {% if photo.id == form.instance.id %}
+          <div class="mb-2">
+            <p>현재 이미지{{ forloop.counter }} :</p>
+            <div class="d-flex align-items-end">
+              <img src="{{ photo.image.url }}" alt="" width="100px;">
+              <input class="form-control" style="height: 38px;" type="text" placeholder="{{ photo.image }}" aria-label="Disabled input example" disabled>
+            </div>              
+          </div>
+          <fieldset class="aligned">
+            <div class="form-row">
+              {% comment %} <p>변경:</p> {% endcomment %}
+              {{ form.image }}
+            </div>
+          </fieldset>
+          <br>
+        {% endif %}
+      {% endfor %}      
+    {% endfor %}    
     <br>
 
     {% comment %} 버튼 부분 {% endcomment %}
