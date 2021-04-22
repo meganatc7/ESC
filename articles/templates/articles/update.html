@@ -21,7 +21,7 @@
       {% for photo in photos %}
         {% if photo.id == form.instance.id %}
           <div class="mb-2">
-            <p>현재 이미지:</p>
+            <p>현재 이미지{{ forloop.counter }} :</p>
             <div class="d-flex align-items-end">
               <img src="{{ photo.image.url }}" alt="" width="100px;">
               <input class="form-control" style="height: 38px;" type="text" placeholder="{{ photo.image }}" aria-label="Disabled input example" disabled>
