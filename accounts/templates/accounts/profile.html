@@ -29,7 +29,7 @@
             </div>
           {% endif %}
         </div>
-        <p class="mt-3">{{ person.introduction }}</p>
+        <p class="mt-3">{{ person.introduction|linebreaks }}</p>
         {% if request.user.pk == person.pk %}
           <div class="mt-5">
             <button class="btn btn-success" id="chg-profile">사진변경</button>
@@ -67,10 +67,12 @@
       <div class="card-body">
         <div class="card">
           {% for article in articles %}
-            <div class="card-body d-flex justify-content-between px-5">
-              <div><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></div>
-              <div>❤{{ article.like_users.count }} 🔎101 📃{{ article.comment_set.count }}</div>
-            </div>
+            <a href="{% url 'articles:detail' article.pk %}">
+              <div class="card-body d-flex justify-content-between px-5 align-item-center">
+                <div><h3>{{ article.title }}</h3></div>
+                <div>❤{{ article.like_users.count }}   📃{{ article.comment_set.count }}</div>
+              </div>
+            </a>
           {% endfor %}
         </div>
       </div>
