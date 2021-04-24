@@ -54,34 +54,53 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs d-flex justify-content-evenly">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="" href="#">작성한 게시물</a>
+            <a class="nav-link active" id="wrote" aria-current="" href="#">작성한 게시물</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">좋아한 게시물</a>
+            <a class="nav-link" id="liked" href="#">좋아한 게시물</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">댓글단 게시물</a>
+            <a class="nav-link" id="commented" href="#">댓글단 게시물</a>
           </li>
         </ul>
       </div>
-      <div class="card-body">
-        <div class="card">
-          {% for article in articles %}
-            <a href="{% url 'articles:detail' article.pk %}">
-              <div class="card-body d-flex justify-content-between px-5 align-items-center">
-                <div><h3 class="m-0">{{ article.title }}</h3></div>
-                <div>💖{{ article.like_users.count }} <span>&nbsp</span> 📃{{ article.comment_set.count }}</div>
-              </div>
-            </a>
-          {% endfor %}
-        </div>
+      <div class="card-body" id="all-article">
+        {% for article in articles %}
+          <div class="card mb-2">
+              <a href="{% url 'articles:detail' article.pk %}">
+                <div class="card-body d-flex justify-content-between px-5 align-items-center">
+                  <div><h3 class="m-0">{{ article.title }}</h3></div>
+                  <div>💖{{ article.like_users.count }} <span>&nbsp</span> 📃{{ article.comment_set.count }}</div>
+                </div>
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="card-body not-visible" id="liked-article">
+        {% for article in liked_articles %}
+          <div class="card mb-2">
+              <a href="{% url 'articles:detail' article.pk %}">
+                <div class="card-body d-flex justify-content-between px-5 align-items-center">
+                  <div><h3 class="m-0">{{ article.title }}</h3></div>
+                  <div>💖{{ article.like_users.count }} <span>&nbsp</span> 📃{{ article.comment_set.count }}</div>
+                </div>
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="card-body not-visible" id="commented-article">
+        {% for article in commented_articles %}
+          <div class="card mb-2">
+              <a href="{% url 'articles:detail' article.pk %}">
+                <div class="card-body d-flex justify-content-between px-5 align-items-center">
+                  <div><h3 class="m-0">{{ article.title }}</h3></div>
+                  <div>💖{{ article.like_users.count }} <span>&nbsp</span> 📃{{ article.comment_set.count }}</div>
+                </div>
+              </a>
+          </div>
+        {% endfor %}
       </div>
     </div>
-    {% comment %} <div class="d-flex justify-content-evenly">
-      <div>작성한 게시물</div>
-      <div>좋아한 게시물</div>
-      <div>댓글단 게시물</div>
-    </div> {% endcomment %}
   </div>
   <script src="{% static 'js/profile.js' %}"></script>
 {% endblock content %}

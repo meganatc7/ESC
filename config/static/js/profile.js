@@ -61,3 +61,38 @@ profileBtn.addEventListener('click', ()=>{
     })
   })
 })
+
+console.log('hi')
+const wrote = document.querySelector('#wrote')
+const liked = document.querySelector('#liked')
+const commented = document.querySelector('#commented')
+const article = document.querySelector('#all-article')
+const likedArticle = document.querySelector('#liked-article')
+const commentedArticle = document.querySelector('#commented-article')
+
+wrote.addEventListener('click',()=>{
+  wrote.className = 'nav-link activate'
+  liked.className = 'nav-link'
+  commented.className = 'nav-link'
+  article.className = 'card-body'
+  likedArticle.className = 'card-body not-visible'
+  commentedArticle.className = 'card-body not-visible'
+})
+
+liked.addEventListener('click',()=>{
+  wrote.className = 'nav-link'
+  liked.className = 'nav-link activate'
+  commented.className = 'nav-link'
+  article.className = 'card-body not-visible'
+  likedArticle.className = 'card-body'
+  commentedArticle.className = 'card-body not-visible'
+})
+
+commented.addEventListener('click',()=>{
+  wrote.className = 'nav-link'
+  liked.className = 'nav-link'
+  commented.className = 'nav-link activate'
+  article.className = 'card-body not-visible'
+  likedArticle.className = 'card-body not-visible'
+  commentedArticle.className = 'card-body'
+})

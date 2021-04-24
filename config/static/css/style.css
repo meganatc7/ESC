@@ -22,3 +22,11 @@ h6 {
   left: auto !important;
   right: 0 !important;
 }
+
+.profile-info {
+  background-color: white;
+}
+
+.profile-info:hover{
+  box-shadow: 0px 0px 20px grey;
+}
