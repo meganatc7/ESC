@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.contrib import messages
+from articles.models import Article
 import json
 import string, random
 
@@ -158,11 +159,20 @@ def delete(request):
 def profile(request, nickname):
     person = get_object_or_404(get_user_model(), nickname=nickname)
     articles = person.article_set.all()
+    liked_articles = person.like_articles.all()
+    comments = person.comment_set.all()
+    print(comments[0].created_at)
+    commented_articles = []
+    for comment in comments:
+        article = get_object_or_404(Article, pk=comment.article_id)
+        commented_articles.append(article)
     form = CustomUserChangeForm()
     context = {
         'person': person,
         'form': form,
         'articles': articles,
+        'liked_articles': liked_articles,
+        'commented_articles': commented_articles,
     }
     return render(request, 'accounts/profile.html', context)
 
@@ -232,14 +242,15 @@ def resetpw(request):
     if request.method == 'POST':
         session_user = request.session['auth']
         current_user = User.objects.get(username=session_user)
-        auth_login(request, current_user)
+        # auth_login(request, current_user)
 
-        reset_password_form = CustomSetPasswordForm(request.user, request.POST)
+        # reset_password_form = CustomSetPasswordForm(request.user, request.POST)
+        reset_password_form = CustomSetPasswordForm(current_user, request.POST)
 
         if reset_password_form.is_valid():
             user = reset_password_form.save()
             messages.success(request, '비밀번호 변경 완료!')
-            auth_logout(request)
+            # auth_logout(request)
             return redirect('accounts:login')
         else:
             auth_logout(request)

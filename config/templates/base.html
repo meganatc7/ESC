@@ -38,9 +38,9 @@
     <div class="fixed-bottom d-flex justify-content-end m-5 dropup">
       <button id="btnGroupDrop1" type="button" class="btn me-2" data-bs-toggle="dropdown" aria-expanded="false">
         {% if request.user.image %}
-          <img src="{{ request.user.image.url }}" alt="..." width="80px" height="80px" class="rounded-circle border border-dark">
+          <img src="{{ request.user.image.url }}" alt="..." width="80px" height="80px" class="rounded-circle border border-dark profile-info">
         {% else %}
-          <img src="{% static 'img/cat.png' %}" alt="..." width="80px" height="80px" class="rounded-circle border border-dark">
+          <img src="{% static 'img/cat.png' %}" alt="..." width="80px" height="80px" class="rounded-circle border border-dark profile-info">
         {% endif %}
       </button>
       <ul class="dropdown-menu custom-margin" aria-labelledby="btnGroupDrop1">
