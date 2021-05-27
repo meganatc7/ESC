@@ -78,7 +78,7 @@ def create(request):
                 article.save()
                 photo_formset.instance = article
                 photo_formset.save()
-                return redirect('articles:index')
+                return redirect('articles:detail', article.pk)
     else:
         article_form = ArticleForm()
         photo_formset = PhotoFormSet()
