@@ -161,7 +161,7 @@ def profile(request, nickname):
     articles = person.article_set.all()
     liked_articles = person.like_articles.all()
     comments = person.comment_set.all()
-    print(comments[0].created_at)
+    
     commented_articles = []
     for comment in comments:
         article = get_object_or_404(Article, pk=comment.article_id)

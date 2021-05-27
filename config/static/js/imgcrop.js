@@ -14,6 +14,7 @@ input.addEventListener('change', ()=>{
   const img_data = input.files[0]
   // Blob 객체를 나타내는 URL을 포함한 DOMString 생성
   const url = URL.createObjectURL(img_data)
+  console.log(url)
   // 가져온 url로 imageBox에 고른 이미지 띄우기
   imageBox.innerHTML = `<img src="${url}" id="image" width="500px">`
 
